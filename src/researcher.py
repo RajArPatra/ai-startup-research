@@ -24,6 +24,7 @@ from playwright.sync_api import sync_playwright
 DATE_STR = datetime.now().strftime("%Y-%m-%d")
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 GROQ_MODEL = "llama-3.3-70b-versatile"
+GROQ_FALLBACK_MODEL = "llama-3.1-8b-instant"  # Higher daily token limit as fallback
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
 EMAIL_TO = [
     "dhamakanetflix@gmail.com",
@@ -211,8 +212,9 @@ def analyze_with_groq(scraped_data, topic_id, topic_info):
     for source_name, text in scraped_data.items():
         all_content += f"\n\n===== {source_name} =====\n{text}"
 
-    if len(all_content) > 20000:
-        all_content = all_content[:20000] + "\n\n[... truncated ...]"
+    # Keep input lean — saves tokens against daily 100K limit
+    if len(all_content) > 12000:
+        all_content = all_content[:12000] + "\n\n[... truncated ...]"
 
     questions_text = "\n".join(f"  {i+1}. {q}" for i, q in enumerate(topic_info["questions"]))
 
@@ -243,37 +245,42 @@ INSTRUCTIONS:
 
 Write the report now:"""
 
-    try:
-        response = client.chat.completions.create(
-            model=GROQ_MODEL,
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=2000,
-            temperature=0.3,
-        )
-        return response.choices[0].message.content
-    except Exception as e:
-        if "rate_limit" in str(e).lower():
-            print("    Rate limited — waiting 30s...")
-            time.sleep(30)
-            response = client.chat.completions.create(
-                model=GROQ_MODEL,
-                messages=[{"role": "user", "content": prompt}],
-                max_tokens=2000,
-                temperature=0.3,
-            )
-            return response.choices[0].message.content
-        return f"AI analysis failed: {e}"
+    # Try primary model, fallback to smaller model on rate limit
+    for model in [GROQ_MODEL, GROQ_FALLBACK_MODEL]:
+        for attempt in range(3):
+            try:
+                response = client.chat.completions.create(
+                    model=model,
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=1500,
+                    temperature=0.3,
+                )
+                return response.choices[0].message.content
+            except Exception as e:
+                err = str(e).lower()
+                if "rate_limit" in err or "429" in err:
+                    # Extract wait time if present, else use exponential backoff
+                    wait = 30 * (attempt + 1)
+                    if "tokens per day" in err:
+                        # Daily limit hit — switch to fallback model
+                        print(f"    Daily token limit on {model} — trying fallback...")
+                        break  # break inner loop to try next model
+                    print(f"    Rate limited — waiting {wait}s (attempt {attempt+1}/3)...")
+                    time.sleep(wait)
+                else:
+                    return f"AI analysis failed: {e}"
+    return "Analysis unavailable — all models rate limited. Will retry next run."
 
 
 def run_all_analyses(scraped_data):
     """Run Groq/Llama analysis for all 8 topics."""
     analyses = {}
     for topic_id, topic_info in REPORT_TOPICS.items():
-        print(f"  [Llama 3.3 70B] {topic_info['title']}...")
+        print(f"  Analyzing: {topic_info['title']}...")
         analysis = analyze_with_groq(scraped_data, topic_id, topic_info)
         analyses[topic_id] = analysis
         print(f"    Done — {len(analysis)} chars")
-        time.sleep(3)
+        time.sleep(5)  # 5s gap between calls
     return analyses
 
 
