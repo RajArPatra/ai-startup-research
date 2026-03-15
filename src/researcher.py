@@ -356,7 +356,6 @@ def save_weekly_json(scraped_data, analyses, output_dir):
     data = {
         "date": DATE_STR,
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "model": GROQ_MODEL,
         "sources": [s["name"] for s in SOURCES],
         "reports": {},
         "scrape_stats": {
