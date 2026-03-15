@@ -246,23 +246,25 @@ Write the report now:"""
 
 
 def analyze_with_gemini(prompt):
-    """Call Gemini 2.0 Flash API. Returns (text, model_name) or raises on failure."""
+    """Call Gemini 2.5 Flash API. Returns (text, model_name) or raises on failure."""
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
 
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
             "temperature": 0.3,
-            "maxOutputTokens": 1500,
+            "maxOutputTokens": 8192,
         },
     }
 
     for attempt in range(3):
-        resp = http_requests.post(url, json=payload, timeout=60)
+        resp = http_requests.post(url, json=payload, timeout=90)
         if resp.status_code == 200:
             data = resp.json()
-            text = data["candidates"][0]["content"]["parts"][0]["text"]
-            return text, f"Gemini 2.0 Flash"
+            # Gemini 2.5 Flash may return thinking + response parts — get the last text part
+            parts = data["candidates"][0]["content"]["parts"]
+            text = parts[-1]["text"]
+            return text, f"Gemini 2.5 Flash"
         elif resp.status_code == 429:
             wait = 15 * (attempt + 1)
             print(f"    Gemini rate limited — waiting {wait}s (attempt {attempt+1}/3)...")
