@@ -26,7 +26,7 @@ DATE_STR = datetime.now().strftime("%Y-%m-%d")
 
 # Primary: Gemini 2.0 Flash (1.5M tokens/day free — massive headroom)
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-GEMINI_MODEL = "gemini-2.0-flash"
+GEMINI_MODEL = "gemini-2.5-flash"
 
 # Fallback: Groq Llama 3.3 70B (100K tokens/day free)
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
