@@ -1,0 +1,44 @@
+name: Weekly AI Research
+
+on:
+  schedule:
+    - cron: '0 14 * * 0'  # Every Sunday 2 PM UTC (9 AM ET)
+  workflow_dispatch:       # Manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium
+          playwright install-deps chromium
+
+      - name: Run researcher
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          python src/researcher.py \
+            --output-dir docs/data/ \
+            --site-url "https://${{ github.repository_owner }}.github.io/ai-startup-research/"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data/
+          git diff --staged --quiet || git commit -m "Weekly report $(date +%Y-%m-%d)"
+          git push
