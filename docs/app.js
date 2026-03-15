@@ -123,10 +123,6 @@ async function loadWeek(date, topicId) {
 
     currentData = data;
 
-    // Update meta
-    document.getElementById('meta-info').textContent =
-        `${data.scrape_stats.total_chars.toLocaleString()} chars scraped | ${data.model}`;
-
     // Build tabs
     const tabsEl = document.getElementById('topic-tabs');
     tabsEl.innerHTML = '';
