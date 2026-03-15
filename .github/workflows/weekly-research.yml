@@ -30,11 +30,8 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
-          python src/researcher.py \
-            --output-dir docs/data/ \
-            --site-url "https://${{ github.repository_owner }}.github.io/ai-startup-research/"
+          python src/researcher.py --output-dir docs/data/
 
       - name: Commit and push
         run: |
