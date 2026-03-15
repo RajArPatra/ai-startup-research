@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.venv/
+*.pdf
+raw_scrapes/
+.DS_Store

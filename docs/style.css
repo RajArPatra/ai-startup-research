@@ -1,0 +1,271 @@
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #232733;
+    --border: #2d3143;
+    --text: #e1e4ed;
+    --text2: #8b90a5;
+    --accent: #6c7cff;
+    --accent2: #4a5adf;
+    --green: #34d399;
+    --yellow: #fbbf24;
+    --red: #f87171;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+/* ── Header ── */
+header {
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    color: var(--text2);
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.week-selector {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.week-selector label {
+    color: var(--text2);
+    font-size: 0.85rem;
+}
+
+#week-select {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.meta {
+    color: var(--text2);
+    font-size: 0.8rem;
+}
+
+/* ── Tabs ── */
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.75rem;
+}
+
+.tab {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.75rem;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.tab:hover {
+    border-color: var(--accent);
+    color: var(--text);
+}
+
+.tab.active {
+    background: var(--accent2);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+/* ── Report Content ── */
+.loading {
+    text-align: center;
+    color: var(--text2);
+    padding: 3rem;
+}
+
+.report {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.report-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+.questions {
+    background: var(--surface2);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.questions h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text2);
+    margin-bottom: 0.5rem;
+}
+
+.questions ol {
+    padding-left: 1.25rem;
+    font-size: 0.85rem;
+    color: var(--text2);
+}
+
+.questions li {
+    margin-bottom: 0.25rem;
+}
+
+.analysis {
+    font-size: 0.9rem;
+    line-height: 1.75;
+}
+
+.analysis h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.25rem;
+}
+
+.analysis h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-bottom: 0.4rem;
+}
+
+.analysis p {
+    margin-bottom: 0.75rem;
+    color: var(--text);
+}
+
+.analysis ul, .analysis ol {
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.analysis li {
+    margin-bottom: 0.35rem;
+}
+
+.analysis strong {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.analysis code {
+    background: var(--surface2);
+    padding: 0.15rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+/* ── Scrape Stats ── */
+.stats {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.stats h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text2);
+    margin-bottom: 0.5rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.4rem;
+}
+
+.stat-item {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
+    background: var(--surface2);
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.stat-name { color: var(--text2); }
+.stat-ok { color: var(--green); }
+.stat-thin { color: var(--yellow); }
+
+/* ── Footer ── */
+footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+}
+
+footer p {
+    font-size: 0.75rem;
+    color: var(--text2);
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .container { padding: 1rem; }
+    h1 { font-size: 1.35rem; }
+    .tabs { gap: 0.3rem; }
+    .tab { font-size: 0.65rem; padding: 0.25rem 0.5rem; }
+    .report { padding: 1rem; }
+}
+
+/* ── Print ── */
+@media print {
+    body { background: #fff; color: #111; }
+    .container { max-width: 100%; }
+    .tabs, .week-selector, footer { display: none; }
+    .report { border: none; padding: 0; }
+    .analysis strong { color: #111; }
+}
