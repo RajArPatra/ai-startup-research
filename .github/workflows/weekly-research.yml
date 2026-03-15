@@ -28,6 +28,7 @@ jobs:
 
       - name: Run researcher
         env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |

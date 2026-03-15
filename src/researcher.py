@@ -2,7 +2,7 @@
 """
 AI Startup World Researcher
 - Scrapes 11 sources using Playwright (headless Chromium)
-- Sends scraped data to Groq (Llama 3.3 70B) for AI-powered analysis
+- AI analysis: Gemini 2.0 Flash (primary) → Groq Llama 3.3 70B (fallback)
 - Saves 8 topic reports as a single weekly JSON file
 - Optionally emails summary via Resend API
 """
@@ -12,6 +12,7 @@ import re
 import json
 import argparse
 import time
+import requests as http_requests
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -22,9 +23,16 @@ from playwright.sync_api import sync_playwright
 # CONFIG
 # ──────────────────────────────────────────────
 DATE_STR = datetime.now().strftime("%Y-%m-%d")
+
+# Primary: Gemini 2.0 Flash (1.5M tokens/day free — massive headroom)
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+GEMINI_MODEL = "gemini-2.0-flash"
+
+# Fallback: Groq Llama 3.3 70B (100K tokens/day free)
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 GROQ_MODEL = "llama-3.3-70b-versatile"
-GROQ_FALLBACK_MODEL = "llama-3.1-8b-instant"  # Higher daily token limit as fallback
+GROQ_FALLBACK_MODEL = "llama-3.1-8b-instant"
+
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
 EMAIL_TO = [
     "dhamakanetflix@gmail.com",
@@ -202,23 +210,21 @@ def extract_page_content(page, source_name):
 
 
 # ──────────────────────────────────────────────
-# AI ANALYSIS (Groq — Llama 3.3 70B)
+# AI ANALYSIS — Gemini (primary) → Groq (fallback)
 # ──────────────────────────────────────────────
-def analyze_with_groq(scraped_data, topic_id, topic_info):
-    """Send scraped content to Groq API for analysis."""
-    client = Groq(api_key=GROQ_API_KEY)
-
+def build_prompt(scraped_data, topic_info):
+    """Build the analysis prompt from scraped data and topic info."""
     all_content = ""
     for source_name, text in scraped_data.items():
         all_content += f"\n\n===== {source_name} =====\n{text}"
 
-    # Keep input lean — saves tokens against daily 100K limit
-    if len(all_content) > 12000:
-        all_content = all_content[:12000] + "\n\n[... truncated ...]"
+    # Gemini has huge context, but keep lean for Groq fallback compatibility
+    if len(all_content) > 15000:
+        all_content = all_content[:15000] + "\n\n[... truncated ...]"
 
     questions_text = "\n".join(f"  {i+1}. {q}" for i, q in enumerate(topic_info["questions"]))
 
-    prompt = f"""You are a senior AI industry research analyst writing an intelligence briefing.
+    return f"""You are a senior AI industry research analyst writing an intelligence briefing.
 
 TODAY'S DATE: {DATE_STR}
 
@@ -245,7 +251,39 @@ INSTRUCTIONS:
 
 Write the report now:"""
 
-    # Try primary model, fallback to smaller model on rate limit
+
+def analyze_with_gemini(prompt):
+    """Call Gemini 2.0 Flash API. Returns (text, model_name) or raises on failure."""
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
+
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {
+            "temperature": 0.3,
+            "maxOutputTokens": 1500,
+        },
+    }
+
+    for attempt in range(3):
+        resp = http_requests.post(url, json=payload, timeout=60)
+        if resp.status_code == 200:
+            data = resp.json()
+            text = data["candidates"][0]["content"]["parts"][0]["text"]
+            return text, f"Gemini 2.0 Flash"
+        elif resp.status_code == 429:
+            wait = 15 * (attempt + 1)
+            print(f"    Gemini rate limited — waiting {wait}s (attempt {attempt+1}/3)...")
+            time.sleep(wait)
+        else:
+            raise Exception(f"Gemini API error {resp.status_code}: {resp.text[:200]}")
+
+    raise Exception("Gemini rate limited after 3 retries")
+
+
+def analyze_with_groq(prompt):
+    """Call Groq API. Returns (text, model_name) or raises on failure."""
+    client = Groq(api_key=GROQ_API_KEY)
+
     for model in [GROQ_MODEL, GROQ_FALLBACK_MODEL]:
         for attempt in range(3):
             try:
@@ -255,32 +293,60 @@ Write the report now:"""
                     max_tokens=1500,
                     temperature=0.3,
                 )
-                return response.choices[0].message.content
+                return response.choices[0].message.content, f"Groq {model}"
             except Exception as e:
                 err = str(e).lower()
                 if "rate_limit" in err or "429" in err:
-                    # Extract wait time if present, else use exponential backoff
-                    wait = 30 * (attempt + 1)
                     if "tokens per day" in err:
-                        # Daily limit hit — switch to fallback model
-                        print(f"    Daily token limit on {model} — trying fallback...")
-                        break  # break inner loop to try next model
-                    print(f"    Rate limited — waiting {wait}s (attempt {attempt+1}/3)...")
+                        print(f"    Groq daily limit on {model} — trying next...")
+                        break
+                    wait = 30 * (attempt + 1)
+                    print(f"    Groq rate limited — waiting {wait}s...")
                     time.sleep(wait)
                 else:
-                    return f"AI analysis failed: {e}"
-    return "Analysis unavailable — all models rate limited. Will retry next run."
+                    raise
+
+    raise Exception("All Groq models rate limited")
+
+
+def analyze_topic(scraped_data, topic_info):
+    """Analyze one topic: try Gemini first, fallback to Groq."""
+    prompt = build_prompt(scraped_data, topic_info)
+
+    # 1. Try Gemini (1.5M tokens/day — should always work)
+    if GEMINI_API_KEY:
+        try:
+            text, model = analyze_with_gemini(prompt)
+            print(f"    [{model}] ✓")
+            return text, model
+        except Exception as e:
+            print(f"    Gemini failed: {e} — falling back to Groq...")
+
+    # 2. Fallback to Groq (Llama 3.3 70B → Llama 3.1 8B)
+    if GROQ_API_KEY:
+        try:
+            text, model = analyze_with_groq(prompt)
+            print(f"    [{model}] ✓")
+            return text, model
+        except Exception as e:
+            print(f"    Groq failed: {e}")
+
+    return "Analysis unavailable — all AI providers failed. Will retry next run.", "none"
 
 
 def run_all_analyses(scraped_data):
-    """Run Groq/Llama analysis for all 8 topics."""
+    """Run AI analysis for all 8 topics with Gemini → Groq fallback chain."""
     analyses = {}
+    models_used = set()
     for topic_id, topic_info in REPORT_TOPICS.items():
         print(f"  Analyzing: {topic_info['title']}...")
-        analysis = analyze_with_groq(scraped_data, topic_id, topic_info)
+        analysis, model = analyze_topic(scraped_data, topic_info)
         analyses[topic_id] = analysis
+        models_used.add(model)
         print(f"    Done — {len(analysis)} chars")
-        time.sleep(5)  # 5s gap between calls
+        time.sleep(3)
+
+    print(f"  Models used: {', '.join(models_used)}")
     return analyses
 
 
