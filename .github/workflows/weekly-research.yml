@@ -2,7 +2,7 @@ name: Weekly AI Research
 
 on:
   schedule:
-    - cron: '30 3 * * 0,1'  # Every Sunday & Monday 3:30 AM UTC (9 AM IST)
+    - cron: '17 3 * * 0,1'  # Every Sunday & Monday 3:17 AM UTC (~8:47 AM IST)
   workflow_dispatch:       # Manual trigger
 
 permissions:
