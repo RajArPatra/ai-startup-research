@@ -1,8 +1,8 @@
-name: Weekly AI Research
+name: Weekly AI Research Papers
 
 on:
   schedule:
-    - cron: '17 3 * * 0,1'  # Every Sunday & Monday 3:17 AM UTC (~8:47 AM IST)
+    - cron: '23 3 * * 1,6'  # Every Saturday & Monday 3:23 AM UTC (~8:53 AM IST)
   workflow_dispatch:       # Manual trigger
 
 permissions:
@@ -26,18 +26,18 @@ jobs:
           playwright install chromium
           playwright install-deps chromium
 
-      - name: Run startup researcher
+      - name: Run research scraper
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
-          python src/researcher.py --output-dir docs/data/
+          python src/research_scraper.py --output-dir docs/research-data/
 
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/data/
-          git diff --staged --quiet || git commit -m "Weekly startup report $(date +%Y-%m-%d)"
+          git add docs/research-data/
+          git diff --staged --quiet || git commit -m "Weekly research report $(date +%Y-%m-%d)"
           git pull --rebase origin main
           git push
