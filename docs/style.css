@@ -29,6 +29,26 @@ body {
     padding: 2rem 1.5rem;
 }
 
+/* ── Site Navigation ── */
+.site-nav {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.nav-link {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: color 0.15s;
+}
+
+.nav-link:hover { color: var(--text); }
+.nav-link.active { color: var(--accent); font-weight: 600; }
+
 /* ── Header ── */
 header {
     margin-bottom: 2rem;
