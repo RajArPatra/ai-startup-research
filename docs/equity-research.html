@@ -51,6 +51,9 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 /* HINT */
 #hint{position:fixed;bottom:20px;right:20px;z-index:100;background:rgba(19,22,31,0.92);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--muted);text-align:center;display:none;}
 
+/* DISCLAIMER */
+#disclaimer{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(10,12,20,0.88);border-top:1px solid var(--border);padding:5px 20px;font-size:10px;color:var(--muted2);text-align:center;display:none;}
+
 /* MAIN SVG */
 #graph-svg{position:fixed;top:48px;left:0;right:0;bottom:0;width:100%;height:calc(100vh - 48px);}
 
@@ -137,6 +140,8 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 </div>
 
 <div id="hint">Scroll to zoom · Drag to pan · Click node</div>
+
+<div id="disclaimer">Data sourced from SEC EDGAR public filings and public market data. Independent financial research — not affiliated with or endorsed by any company shown. All figures in USD.</div>
 
 <div id="panel">
   <div id="panel-close">
@@ -240,10 +245,11 @@ async function init() {
   const { COMPANIES, EDGES, meta } = buildVizData(raw);
   window._SC = { COMPANIES, EDGES };
 
-  document.getElementById("loading").style.display = "none";
-  document.getElementById("header").style.display  = "flex";
-  document.getElementById("legend").style.display  = "block";
-  document.getElementById("hint").style.display    = "block";
+  document.getElementById("loading").style.display     = "none";
+  document.getElementById("header").style.display      = "flex";
+  document.getElementById("legend").style.display      = "block";
+  document.getElementById("hint").style.display        = "block";
+  document.getElementById("disclaimer").style.display  = "block";
 
   const hi = meta.data_quality?.high || 0;
   const n  = Object.keys(COMPANIES).length;
