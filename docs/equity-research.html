@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Equity Research — Micron Financial Supply Chain</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+<style>
+:root {
+  --bg:#0a0c14; --surface:#13161f; --surface2:#1c2030;
+  --border:#252836; --border2:#2e3347;
+  --text:#e8eaf0; --muted:#8890a8; --muted2:#555c78;
+  --green:#34d399; --blue:#60a5fa; --red:#f87171;
+  --amber:#fbbf24; --purple:#a78bfa; --teal:#2dd4bf;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,monospace;overflow:hidden;height:100vh;width:100vw;}
+
+/* HEADER */
+#header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,12,20,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;}
+#header h1{font-size:16px;font-weight:700;letter-spacing:-0.3px;}
+#header h1 span{color:var(--green);}
+#header .badge{font-size:11px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:3px 10px;}
+#header .controls{display:flex;gap:8px;}
+.ctrl-btn{background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:11px;padding:4px 10px;cursor:pointer;transition:all .15s;}
+.ctrl-btn:hover{color:var(--text);border-color:var(--border2);}
+.ctrl-btn.active{color:var(--green);border-color:var(--green);}
+
+/* LEGEND */
+#legend{position:fixed;bottom:20px;left:20px;z-index:100;background:rgba(19,22,31,0.92);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:11px;}
+#legend .l-title{color:var(--muted);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+.legend-item{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.l-dot{width:10px;height:10px;border-radius:50%;}
+.l-line{width:24px;height:3px;border-radius:2px;}
+
+/* HINT */
+#hint{position:fixed;bottom:20px;right:20px;z-index:100;background:rgba(19,22,31,0.92);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:11px;color:var(--muted);max-width:200px;text-align:center;}
+
+/* MAIN SVG */
+#graph-svg{position:fixed;top:48px;left:0;right:0;bottom:0;width:100%;height:calc(100vh - 48px);}
+
+/* SIDE PANEL */
+#panel{position:fixed;top:48px;right:-600px;width:600px;height:calc(100vh - 48px);background:var(--surface);border-left:1px solid var(--border);overflow-y:auto;transition:right .35s cubic-bezier(.4,0,.2,1);z-index:200;}
+#panel.open{right:0;}
+#panel-close{position:sticky;top:0;z-index:10;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;}
+#panel-close .close-btn{cursor:pointer;color:var(--muted);font-size:18px;line-height:1;padding:2px 8px;border-radius:4px;}
+#panel-close .close-btn:hover{color:var(--text);background:var(--surface2);}
+#panel-content{padding:20px;}
+
+/* PANEL STYLES */
+.company-header{margin-bottom:20px;}
+.company-ticker{font-size:28px;font-weight:800;letter-spacing:-1px;}
+.company-name{font-size:14px;color:var(--muted);margin-bottom:4px;}
+.company-role-badge{display:inline-block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;padding:3px 8px;border-radius:4px;margin-top:6px;}
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:20px;}
+.kpi{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;}
+.kpi-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;}
+.kpi-val{font-size:17px;font-weight:700;}
+.kpi-val.g{color:var(--green);}
+.kpi-val.r{color:var(--red);}
+.kpi-val.b{color:var(--blue);}
+.section-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.sankey-wrap{overflow-x:auto;}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;}
+.bar-label{width:160px;color:var(--text);flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar-track{flex:1;background:var(--surface2);border-radius:3px;height:14px;position:relative;}
+.bar-fill{height:100%;border-radius:3px;transition:width .4s;}
+.bar-val{width:70px;text-align:right;color:var(--muted);flex-shrink:0;}
+.connections-list{display:flex;flex-direction:column;gap:6px;}
+.conn-item{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:border-color .15s;}
+.conn-item:hover{border-color:var(--border2);}
+.conn-name{font-size:12px;font-weight:600;}
+.conn-flow{font-size:11px;color:var(--amber);}
+.conn-type{font-size:10px;color:var(--muted);}
+.est-tag{font-size:9px;background:#78350f;color:var(--amber);padding:1px 5px;border-radius:3px;margin-left:4px;}
+.src-tag{font-size:9px;background:#1e3a5f;color:var(--blue);padding:1px 5px;border-radius:3px;margin-left:4px;}
+
+/* TOOLTIP */
+#tooltip{position:fixed;pointer-events:none;background:rgba(19,22,31,0.97);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:11px;z-index:500;display:none;box-shadow:0 8px 30px rgba(0,0,0,0.6);max-width:260px;}
+#tooltip .tt-name{font-weight:700;font-size:13px;margin-bottom:3px;}
+#tooltip .tt-rev{color:var(--green);font-size:12px;}
+#tooltip .tt-role{color:var(--muted);font-size:10px;margin-top:2px;}
+
+/* SEARCH */
+#search{position:fixed;top:58px;left:50%;transform:translateX(-50%);z-index:150;display:none;}
+#search input{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:13px;padding:8px 14px;width:280px;outline:none;}
+#search input:focus{border-color:var(--green);}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div style="display:flex;align-items:center;gap:20px;">
+    <h1>Micron Technology <span>(MU)</span> — Financial Supply Chain Network</h1>
+    <nav style="display:flex;gap:14px;margin-left:8px;">
+      <a href="index.html" style="color:var(--muted);text-decoration:none;font-size:11px;font-weight:500;transition:color .15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Startup Intelligence</a>
+      <a href="research.html" style="color:var(--muted);text-decoration:none;font-size:11px;font-weight:500;transition:color .15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">AI Research</a>
+      <a href="equity-research.html" style="color:var(--green);text-decoration:none;font-size:11px;font-weight:600;">Equity Research</a>
+    </nav>
+  </div>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <div class="badge">FY2025 Data · SEC EDGAR XBRL</div>
+    <div class="badge">Click any node for Sankey breakdown</div>
+  </div>
+  <div class="controls">
+    <button class="ctrl-btn active" id="btn-physics">Physics On</button>
+    <button class="ctrl-btn" id="btn-reset">Reset View</button>
+  </div>
+</div>
+
+<svg id="graph-svg"></svg>
+
+<div id="legend">
+  <div class="l-title">Legend</div>
+  <div class="legend-item"><div class="l-dot" style="background:#93c5fd"></div> Level 2 Suppliers</div>
+  <div class="legend-item"><div class="l-dot" style="background:#60a5fa"></div> Level 1 Suppliers</div>
+  <div class="legend-item"><div class="l-dot" style="background:#34d399;width:14px;height:14px;border:2px solid #6ee7b7"></div> Micron (MU)</div>
+  <div class="legend-item"><div class="l-dot" style="background:#f87171"></div> Level 1 Customers</div>
+  <div class="legend-item"><div class="l-dot" style="background:#fca5a5"></div> Level 2 Customers</div>
+  <div style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px;">
+  <div class="legend-item"><div class="l-line" style="background:#60a5fa;opacity:0.6"></div> Supplier flow</div>
+  <div class="legend-item"><div class="l-line" style="background:#f87171;opacity:0.6"></div> Revenue flow</div>
+  <div class="legend-item"><div class="l-line" style="background:#fbbf24;opacity:0.6;border:1px dashed var(--amber)"></div> ⚡ Estimated</div>
+  </div>
+</div>
+
+<div id="hint">Scroll to zoom · Drag to pan · Click node to expand</div>
+
+<div id="panel">
+  <div id="panel-close">
+    <span id="panel-company-title" style="font-weight:700;font-size:15px;"></span>
+    <span class="close-btn" id="panel-close-btn">✕</span>
+  </div>
+  <div id="panel-content"></div>
+</div>
+
+<div id="tooltip">
+  <div class="tt-name" id="tt-name"></div>
+  <div class="tt-rev" id="tt-rev"></div>
+  <div class="tt-role" id="tt-role"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DATA — All financial data from SEC EDGAR XBRL APIs
+// ═══════════════════════════════════════════════════════════════
+const B=1e9,M=1e6;
+const fmt=v=>v>=B?'$'+(v/B).toFixed(1)+'B':v>=M?'$'+(v/M).toFixed(0)+'M':v>0?'$'+v.toLocaleString():'—';
+const fmtShort=v=>v>=1e12?'$'+(v/1e12).toFixed(1)+'T':v>=B?'$'+(v/B).toFixed(1)+'B':v>=M?'$'+(v/M).toFixed(0)+'M':'—';
+
+const COMPANIES = {
+  MU:{id:"MU",name:"Micron Technology",ticker:"MU",role:"center",sector:"Memory Semiconductors",color:"#34d399",
+    fin:{revenue:37378*M,cogs:22505*M,gross_profit:14873*M,rnd:3798*M,sga:1205*M,op_income:9770*M,net_income:8539*M,tax:1124*M,depreciation:8352*M,capex:15857*M,fy:2025,period:"FY2025 (Aug 28 2025)"},
+    segments:{CMBU_Cloud_Memory:13524*M,CDBU_Core_Data_Center:7229*M,MCBU_Mobile_Client:11859*M,AEBU_Auto_Embedded:4753*M},
+    geo:{United_States:24113*M,Taiwan:5672*M,Mainland_China:2639*M,Other_Asia_Pacific:1913*M,Hong_Kong:1138*M,Japan:895*M,Europe:625*M,Other:383*M},
+    products:{DRAM:28578*M,NAND:8503*M,Other:297*M},
+    notes:"World's 3rd largest memory chip maker. FY2025 revenue surged 49% YoY driven by HBM (High Bandwidth Memory) for AI. Top customer (17%, likely NVIDIA/hyperscaler) primarily buys HBM3E. Sources: Micron 10-K FY2025 (SEC EDGAR CIK 0000723125), inline XBRL"},
+  // LEVEL 1 SUPPLIERS
+  AMAT:{id:"AMAT",name:"Applied Materials",ticker:"AMAT",role:"supplier_l1",sector:"Semiconductor Equipment",color:"#60a5fa",
+    fin:{revenue:28368*M,cogs:14560*M,gross_profit:13808*M,rnd:3570*M,sga:1768*M,op_income:8289*M,net_income:6998*M,tax:2273*M,capex:2260*M,fy:2025,period:"FY2025 (Oct 26 2025)"},
+    segments:{Semiconductor_Systems:21400*M,Applied_Global_Services:5800*M,Display_Adjacent:1168*M},
+    notes:"World's largest semiconductor equipment company. Provides deposition, etch, CMP, and thermal processing tools to Micron. Source: AMAT XBRL (SEC CIK 0000006951)"},
+  LRCX:{id:"LRCX",name:"Lam Research",ticker:"LRCX",role:"supplier_l1",sector:"Semiconductor Equipment",color:"#60a5fa",
+    fin:{revenue:18436*M,cogs:9457*M,gross_profit:8979*M,rnd:2096*M,sga:982*M,op_income:5901*M,net_income:5358*M,tax:600*M,depreciation:330*M,fy:2025,period:"FY2025 (Jun 29 2025)"},
+    segments:{Memory_customer_revenues:10000*M,Logic_customer_revenues:8436*M},
+    notes:"#2 semiconductor equipment co. Specializes in etch and deposition. ~50% of revenue from memory (Samsung, Micron, SK Hynix). Source: LRCX XBRL (SEC CIK 0000707549)"},
+  KLAC:{id:"KLAC",name:"KLA Corporation",ticker:"KLAC",role:"supplier_l1",sector:"Process Control / Inspection",color:"#60a5fa",
+    fin:{revenue:12156*M,cogs:4752*M,rnd:1360*M,sga:1030*M,net_income:4062*M,tax:583*M,depreciation:394*M,capex:335*M,fy:2025,period:"FY2025 (Jun 30 2025)"},
+    notes:"World leader in process control, defect inspection, and metrology. Used in every node of advanced chip manufacturing. Source: KLAC XBRL (SEC CIK 0000319201)"},
+  ENTG:{id:"ENTG",name:"Entegris",ticker:"ENTG",role:"supplier_l1",sector:"Semiconductor Materials",color:"#60a5fa",
+    fin:{revenue:3197*M,gross_profit:1420*M,rnd:329*M,sga:451*M,op_income:456*M,net_income:236*M,tax:18*M,depreciation:205*M,capex:299*M,fy:2025,period:"FY2025 (Dec 31 2025)"},
+    notes:"Leading supplier of advanced materials: ultrapure chemicals, filters, gas purification, and CMP slurries for semiconductor fabs. Source: ENTG XBRL (SEC CIK 0001101302)"},
+  ONTO:{id:"ONTO",name:"Onto Innovation",ticker:"ONTO",role:"supplier_l1",sector:"Metrology / Inspection",color:"#60a5fa",
+    fin:{revenue:660*M,cogs:487*M,rnd:1*M,sga:132*M,op_income:-27*M,net_income:-88*M,tax:-18*M,depreciation:34*M,capex:17*M,fy:2025,period:"FY2025 (Jun 30 2025)"},
+    notes:"Metrology and process control tools. Key tool: Dragonfly G3 for HBM advanced packaging inspection. Source: ONTO XBRL (SEC CIK 0001041514)"},
+  // LEVEL 2 SUPPLIERS
+  UCTT:{id:"UCTT",name:"Ultra Clean Holdings",ticker:"UCTT",role:"supplier_l2",sector:"Equipment Subsystems",color:"#93c5fd",
+    fin:{revenue:2098*M,gross_profit:323*M,rnd:32*M,op_income:-107*M,net_income:-181*M,tax:26*M,capex:50*M,fy:2024,period:"FY2024 (Dec 27 2024)"},
+    notes:"Makes gas delivery systems, quartz components, and precision machined parts — the 'plumbing' inside AMAT and Lam equipment. Source: UCTT XBRL (SEC CIK 0001275014)"},
+  ACLS:{id:"ACLS",name:"Axcelis Technologies",ticker:"ACLS",role:"supplier_l2",sector:"Ion Implant Tools",color:"#93c5fd",
+    fin:{revenue:839*M,cogs:462*M,gross_profit:377*M,rnd:109*M,op_income:119*M,net_income:120*M,tax:18*M,depreciation:18*M,capex:11*M,fy:2025,period:"FY2025 (Dec 31 2025)"},
+    notes:"Builds Purion ion implant systems used to dope silicon wafers. Memory fabs (including Micron) are major customers. Source: ACLS XBRL (SEC CIK 0001113232)"},
+  MKSI:{id:"MKSI",name:"MKS Instruments",ticker:"MKSI",role:"supplier_l2",sector:"Instruments & Power",color:"#93c5fd",
+    fin:{revenue:7562*M,cogs:4883*M,gross_profit:2679*M,sga:1426*M,op_income:1248*M,net_income:810*M,tax:277*M,depreciation:148*M,fy:2025,period:"FY2025 (Dec 31 2025)"},
+    notes:"Provides power delivery, pressure, flow, and photonics components that go inside AMAT, Lam, KLA equipment. Also direct fab consumables. Source: MKSI XBRL (SEC CIK 0000062996)"},
+  // LEVEL 1 CUSTOMERS
+  NVDA:{id:"NVDA",name:"NVIDIA",ticker:"NVDA",role:"customer_l1",sector:"AI / GPU Semiconductors",color:"#f87171",
+    fin:{revenue:195000*M,gross_profit:153463*M,rnd:18497*M,sga:4579*M,op_income:130387*M,net_income:120067*M,tax:21383*M,depreciation:2843*M,fy:2026,period:"FY2026 (Jan 25 2026)"},
+    segments:{Data_Center:181300*M,Gaming:11400*M,Professional_Viz:1200*M,Automotive:1100*M},
+    notes:"Micron's #1 customer (17% of MU rev = ~$6.4B). Buys HBM3E for H100/H200/Blackwell GPU compute. NVIDIA FY2026 revenue ~$195B (gross profit $153B at ~79% margin). Source: NVDA XBRL (CIK 0001045810) + earnings reports"},
+  AAPL:{id:"AAPL",name:"Apple",ticker:"AAPL",role:"customer_l1",sector:"Consumer Electronics",color:"#f87171",
+    fin:{revenue:416161*M,cogs:220960*M,gross_profit:195201*M,rnd:34550*M,sga:27601*M,op_income:133050*M,net_income:112010*M,tax:20719*M,depreciation:11698*M,capex:12715*M,fy:2025,period:"FY2025 (Sep 27 2025)"},
+    segments:{iPhone:211000*M,Services:100000*M,Mac:34000*M,iPad:28000*M,Wearables_Other:43161*M},
+    notes:"Major Micron NAND/DRAM buyer for iPhone (LPDDR5, UFS), iPad, and Mac. Source: AAPL XBRL (CIK 0000320193) + 10-K segment disclosures"},
+  DELL:{id:"DELL",name:"Dell Technologies",ticker:"DELL",role:"customer_l1",sector:"Enterprise Hardware",color:"#f87171",
+    fin:{revenue:113538*M,cogs:90831*M,gross_profit:22707*M,rnd:3142*M,sga:11416*M,op_income:8149*M,net_income:5936*M,tax:1327*M,depreciation:3029*M,capex:2633*M,fy:2026,period:"FY2026 (Jan 30 2026)"},
+    segments:{Infrastructure_Solutions:50000*M,Client_Solutions:63538*M},
+    notes:"Large buyer of Micron DRAM for servers (PowerEdge) and PCs. Source: DELL XBRL (CIK 0001571996)"},
+  MSFT:{id:"MSFT",name:"Microsoft",ticker:"MSFT",role:"customer_l1",sector:"Cloud / Software",color:"#f87171",
+    fin:{revenue:281724*M,cogs:87831*M,gross_profit:193893*M,rnd:32488*M,op_income:128528*M,net_income:101832*M,tax:21795*M,depreciation:22000*M,capex:64551*M,fy:2025,period:"FY2025 (Jun 30 2025)"},
+    segments:{Intelligent_Cloud:105400*M,Productivity_Business:81000*M,Personal_Computing:55324*M,Gaming_Other:40000*M},
+    notes:"Azure hyperscale DRAM buyer. $64.6B capex in FY2025 — heavy AI data center buildout. Source: MSFT XBRL (CIK 0000789019)"},
+  AMZN:{id:"AMZN",name:"Amazon",ticker:"AMZN",role:"customer_l1",sector:"Cloud / E-Commerce",color:"#f87171",
+    fin:{revenue:716924*M,cogs:356414*M,op_income:79975*M,net_income:77670*M,tax:19087*M,depreciation:65756*M,fy:2025,period:"FY2025 (Dec 31 2025)"},
+    segments:{AWS:117200*M,North_America_Retail:387900*M,International:158000*M,Advertising:56800*M},
+    notes:"AWS is world's largest cloud. Massive DRAM buyer for EC2 instances. Amazon FY2025 revenue $716.9B. Source: AMZN XBRL (CIK 0001018724)"},
+  GOOGL:{id:"GOOGL",name:"Alphabet (Google)",ticker:"GOOGL",role:"customer_l1",sector:"Cloud / Advertising",color:"#f87171",
+    fin:{revenue:350018*M,cogs:162535*M,rnd:61087*M,op_income:129039*M,net_income:132170*M,tax:26656*M,depreciation:21136*M,capex:91447*M,fy:2025,period:"FY2024-25 (Dec 31)"},
+    segments:{Google_Services:284700*M,Google_Cloud:43200*M,Other_Bets:1600*M,Alphabet_Other:20518*M},
+    notes:"GCP hyperscale DRAM/HBM buyer. $91B capex in FY2025 — largest AI infra spender. Source: GOOGL XBRL (CIK 0001652044)"},
+  META:{id:"META",name:"Meta",ticker:"META",role:"customer_l1",sector:"Social Media / AI",color:"#f87171",
+    fin:{revenue:200966*M,cogs:36175*M,rnd:57372*M,op_income:83276*M,net_income:60458*M,tax:25474*M,depreciation:18616*M,capex:69691*M,fy:2025,period:"FY2025 (Dec 31 2025)"},
+    segments:{Family_of_Apps:199900*M,Reality_Labs:1066*M},
+    notes:"Massive AI training infra investor. Buys DRAM for Llama AI training clusters. $69.7B capex. Source: META XBRL (CIK 0001326801)"},
+  HPQ:{id:"HPQ",name:"HP Inc",ticker:"HPQ",role:"customer_l1",sector:"PC / Printer Hardware",color:"#f87171",
+    fin:{revenue:55295*M,cogs:43903*M,gross_profit:11392*M,rnd:1602*M,sga:5821*M,op_income:3174*M,net_income:2529*M,tax:139*M,depreciation:916*M,fy:2025,period:"FY2025 (Oct 31 2025)"},
+    segments:{Personal_Systems:39000*M,Printing:16295*M},
+    notes:"PC and printer maker. Buys Micron DRAM/NAND for notebooks and workstations. Source: HPQ XBRL (CIK 0000047217)"},
+  // LEVEL 2 CUSTOMERS
+  TSLA:{id:"TSLA",name:"Tesla",ticker:"TSLA",role:"customer_l2",sector:"EV / Automotive AI",color:"#fca5a5",
+    fin:{revenue:94827*M,cogs:77733*M,gross_profit:17094*M,rnd:6411*M,sga:5834*M,op_income:4355*M,net_income:3794*M,tax:1423*M,capex:8527*M,fy:2025,period:"FY2025 (Dec 31 2025)"},
+    segments:{Automotive:79600*M,Energy_Generation:11800*M,Services_Other:3427*M},
+    notes:"Buys NVIDIA GPUs for Dojo supercomputer and in-car FSD compute. Also purchases semicon components. Source: TSLA XBRL (CIK 0001318605)"},
+  AWS_CUSTOMERS:{id:"AWS_CUSTOMERS",name:"AWS End Customers",ticker:null,role:"customer_l2",sector:"Cloud End Users",color:"#fca5a5",
+    fin:{revenue:117200*M,fy:"2025",period:"AWS segment FY2025"},
+    notes:"AWS serves 1M+ businesses, governments, and startups worldwide. AWS segment revenue $117.2B. Derived from Amazon XBRL"},
+  AZURE_CUSTOMERS:{id:"AZURE_CUSTOMERS",name:"Azure End Customers",ticker:null,role:"customer_l2",sector:"Cloud End Users",color:"#fca5a5",
+    fin:{revenue:105400*M,fy:"2025",period:"Azure segment FY2025"},
+    notes:"Microsoft Azure cloud customers: enterprises, developers, governments. Derived from Microsoft XBRL intelligent cloud segment"},
+};
+
+const EDGES = [
+  // L2 Supplier → L1 Supplier
+  {s:"UCTT",t:"AMAT",v:800*M,type:"supply",est:true,label:"Gas/subsystems for AMAT tools"},
+  {s:"UCTT",t:"LRCX",v:600*M,type:"supply",est:true,label:"Gas/subsystems for Lam tools"},
+  {s:"MKSI",t:"AMAT",v:400*M,type:"supply",est:true,label:"Power/flow/pressure modules"},
+  {s:"MKSI",t:"LRCX",v:350*M,type:"supply",est:true,label:"Power/flow/pressure modules"},
+  {s:"MKSI",t:"KLAC",v:250*M,type:"supply",est:true,label:"Photonics & instruments"},
+  // L1 Supplier → MU (capex spend)
+  {s:"AMAT",t:"MU",v:2854*M,type:"supply",est:true,label:"Deposition/etch tools ~$2.9B"},
+  {s:"LRCX",t:"MU",v:2379*M,type:"supply",est:true,label:"Etch/deposition tools ~$2.4B"},
+  {s:"KLAC",t:"MU",v:950*M,type:"supply",est:true,label:"Inspection/metrology ~$0.95B"},
+  {s:"ENTG",t:"MU",v:600*M,type:"supply",est:true,label:"Chemicals/materials ~$0.6B"},
+  {s:"ONTO",t:"MU",v:180*M,type:"supply",est:true,label:"Metrology tools ~$0.18B"},
+  {s:"ACLS",t:"MU",v:300*M,type:"supply",est:true,label:"Ion implant tools ~$0.3B"},
+  // MU → L1 Customers (revenue)
+  {s:"MU",t:"NVDA",v:6354*M,type:"revenue",est:false,label:"HBM3E memory 17% of MU rev"},
+  {s:"MU",t:"AAPL",v:2800*M,type:"revenue",est:true,label:"NAND/DRAM for iPhone/Mac"},
+  {s:"MU",t:"DELL",v:2200*M,type:"revenue",est:true,label:"Server/PC DRAM"},
+  {s:"MU",t:"MSFT",v:2100*M,type:"revenue",est:true,label:"Azure hyperscale DRAM"},
+  {s:"MU",t:"AMZN",v:1900*M,type:"revenue",est:true,label:"AWS hyperscale DRAM"},
+  {s:"MU",t:"GOOGL",v:1600*M,type:"revenue",est:true,label:"GCP hyperscale DRAM/HBM"},
+  {s:"MU",t:"META",v:1200*M,type:"revenue",est:true,label:"AI training DRAM"},
+  {s:"MU",t:"HPQ",v:900*M,type:"revenue",est:true,label:"PC/workstation DRAM/NAND"},
+  // L1 Customer → L2 Customer (NVIDIA sells GPUs to cloud)
+  {s:"NVDA",t:"MSFT",v:10000*M,type:"procurement",est:true,label:"NVIDIA GPUs for Azure AI"},
+  {s:"NVDA",t:"AMZN",v:8000*M,type:"procurement",est:true,label:"NVIDIA GPUs for AWS"},
+  {s:"NVDA",t:"GOOGL",v:6000*M,type:"procurement",est:true,label:"NVIDIA GPUs for GCP"},
+  {s:"NVDA",t:"META",v:9000*M,type:"procurement",est:true,label:"NVIDIA GPUs for AI training"},
+  {s:"NVDA",t:"TSLA",v:500*M,type:"procurement",est:true,label:"NVIDIA chips (Dojo)"},
+  {s:"AMZN",t:"AWS_CUSTOMERS",v:117200*M,type:"revenue",est:false,label:"AWS cloud services revenue"},
+  {s:"MSFT",t:"AZURE_CUSTOMERS",v:105400*M,type:"revenue",est:false,label:"Azure cloud services revenue"},
+];
+
+// ═══════════════════════════════════════════════════════════════
+// GRAPH LAYOUT
+// Fixed horizontal positions by level
+// ═══════════════════════════════════════════════════════════════
+const ROLES = {
+  supplier_l2:{col:0, label:"Level 2\nSuppliers"},
+  supplier_l1:{col:1, label:"Level 1\nSuppliers"},
+  center:     {col:2, label:"Micron\n(MU)"},
+  customer_l1:{col:3, label:"Level 1\nCustomers"},
+  customer_l2:{col:4, label:"Level 2\nCustomers"},
+};
+
+const nodeList = Object.values(COMPANIES);
+const edgeList = EDGES;
+
+// Group by role
+const byRole = {};
+nodeList.forEach(n => {
+  if(!byRole[n.role]) byRole[n.role]=[];
+  byRole[n.role].push(n);
+});
+
+// ═══════════════════════════════════════════════════════════════
+// D3 FORCE SIMULATION WITH HORIZONTAL CONSTRAINTS
+// ═══════════════════════════════════════════════════════════════
+let simulation, physicsOn = true;
+
+const svg = d3.select("#graph-svg");
+let W = window.innerWidth, H = window.innerHeight - 48;
+svg.attr("width",W).attr("height",H);
+
+const g = svg.append("g").attr("id","main-g");
+
+// Zoom
+const zoom = d3.zoom()
+  .scaleExtent([0.25, 3])
+  .on("zoom", e => g.attr("transform", e.transform));
+svg.call(zoom);
+
+// Column X positions
+const colW = W / 5;
+const colX = col => colW * col + colW * 0.5;
+
+// Revenue → radius
+const maxRev = d3.max(nodeList, d => d.fin.revenue || 0);
+const rScale = d3.scaleSqrt().domain([0, maxRev]).range([8, 48]).clamp(true);
+
+// Assign initial positions
+nodeList.forEach(n => {
+  const col = ROLES[n.role]?.col ?? 2;
+  const nodesInCol = byRole[n.role] || [];
+  const idx = nodesInCol.indexOf(n);
+  const total = nodesInCol.length;
+  n.x = colX(col);
+  n.y = H * (idx + 1) / (total + 1);
+  n.col = col;
+});
+
+// Edge accessors
+edgeList.forEach(e => {
+  e.source = e.s;
+  e.target = e.t;
+});
+
+// Build simulation
+const links = edgeList.filter(e => COMPANIES[e.s] && COMPANIES[e.t]).map(e=>({...e}));
+const nodes = nodeList.map(n=>({...n}));
+
+simulation = d3.forceSimulation(nodes)
+  .force("link", d3.forceLink(links).id(d=>d.id).distance(d=>{
+    const sv = d.v||0;
+    return sv>5*B?90:sv>1*B?120:150;
+  }).strength(0.3))
+  .force("charge", d3.forceManyBody().strength(-800))
+  .force("x", d3.forceX(d => colX(d.col)).strength(0.8))
+  .force("y", d3.forceY(H/2).strength(0.05))
+  .force("collide", d3.forceCollide(d => rScale(d.fin.revenue||0) + 22))
+  .on("tick", ticked);
+
+// ─── COLUMN LABELS ───
+g.append("g").attr("id","col-labels").selectAll("text")
+  .data(Object.entries(ROLES))
+  .join("text")
+  .attr("x", d=> colX(d[1].col))
+  .attr("y", 28)
+  .attr("text-anchor","middle")
+  .attr("fill","#555c78")
+  .attr("font-size","11px")
+  .attr("font-weight","600")
+  .text(d=>d[1].label.replace("\n"," — "));
+
+// ─── EDGE PATHS ───
+const linkG = g.append("g").attr("id","links");
+const linkSel = linkG.selectAll("line")
+  .data(links)
+  .join("line")
+  .attr("stroke", d => d.type==="revenue" ? "#f87171" : d.type==="procurement" ? "#a78bfa" : "#60a5fa")
+  .attr("stroke-opacity", d => d.type==="procurement" ? 0.2 : 0.35)
+  .attr("stroke-width", d => {
+    const v = d.v||0;
+    return Math.max(1, Math.min(12, v/1e9*1.5));
+  })
+  .attr("stroke-dasharray", d => d.est ? "4,4" : null)
+  .on("mouseover", function(event,d){
+    d3.select(this).attr("stroke-opacity",0.8);
+    const src = COMPANIES[d.s], tgt = COMPANIES[d.t];
+    showTip(event, `${src?.name} → ${tgt?.name}`, d.label + (d.est?" ⚡ Est.":" ✓"), fmt(d.v));
+  })
+  .on("mousemove", moveTip)
+  .on("mouseout", function(event,d){ d3.select(this).attr("stroke-opacity", d.type==="procurement"?0.2:0.35); hideTip(); });
+
+// ─── NODES ───
+const nodeG = g.append("g").attr("id","nodes");
+const nodeSel = nodeG.selectAll(".node-g")
+  .data(nodes)
+  .join("g")
+  .attr("class","node-g")
+  .attr("cursor","pointer")
+  .call(d3.drag()
+    .on("start", dragstarted)
+    .on("drag", dragged)
+    .on("end", dragended))
+  .on("click", (event, d) => { event.stopPropagation(); openPanel(d.id); });
+
+// Outer glow ring for center
+nodeSel.filter(d=>d.role==="center")
+  .append("circle")
+  .attr("r", d => rScale(d.fin.revenue||0)+8)
+  .attr("fill","none")
+  .attr("stroke","#34d399")
+  .attr("stroke-opacity",0.2)
+  .attr("stroke-width",4);
+
+// Main circle
+nodeSel.append("circle")
+  .attr("r", d => rScale(d.fin.revenue||0))
+  .attr("fill", d => d.color)
+  .attr("fill-opacity",0.85)
+  .attr("stroke", d => d.color)
+  .attr("stroke-width", 1.5)
+  .attr("stroke-opacity",0.5)
+  .on("mouseover", function(event,d){
+    d3.select(this).attr("fill-opacity",1).attr("stroke-width",2.5);
+    showTip(event, d.name, fmtShort(d.fin.revenue||0)+" revenue", d.sector);
+  })
+  .on("mousemove", moveTip)
+  .on("mouseout", function(){ d3.select(this).attr("fill-opacity",0.85).attr("stroke-width",1.5); hideTip(); });
+
+// Ticker label
+nodeSel.append("text")
+  .attr("text-anchor","middle")
+  .attr("dy","0.35em")
+  .attr("fill","#0a0c14")
+  .attr("font-size", d => d.role==="center"?14:d.fin.revenue>100*B?11:10)
+  .attr("font-weight","800")
+  .text(d=>d.ticker||d.id.substring(0,4));
+
+// Name below (only for large nodes)
+nodeSel.append("text")
+  .attr("text-anchor","middle")
+  .attr("dy", d => rScale(d.fin.revenue||0)+14)
+  .attr("fill","#8890a8")
+  .attr("font-size","10px")
+  .text(d=> d.name.length>14 ? d.name.substring(0,13)+"…" : d.name);
+
+// Revenue below name
+nodeSel.append("text")
+  .attr("text-anchor","middle")
+  .attr("dy", d => rScale(d.fin.revenue||0)+25)
+  .attr("fill","#555c78")
+  .attr("font-size","9px")
+  .text(d=>fmtShort(d.fin.revenue||0));
+
+// ─── TICK ───
+function ticked(){
+  linkSel
+    .attr("x1",d=>d.source.x)
+    .attr("y1",d=>d.source.y)
+    .attr("x2",d=>d.target.x)
+    .attr("y2",d=>d.target.y);
+  nodeSel.attr("transform",d=>`translate(${d.x},${d.y})`);
+}
+
+function dragstarted(event,d){
+  if(!event.active) simulation.alphaTarget(0.3).restart();
+  d.fx=d.x; d.fy=d.y;
+}
+function dragged(event,d){ d.fx=event.x; d.fy=event.y; }
+function dragended(event,d){
+  if(!event.active) simulation.alphaTarget(0);
+  if(!physicsOn){ d.fx=event.x; d.fy=event.y; }
+  else { d.fx=null; d.fy=null; }
+}
+
+// ─── PHYSICS TOGGLE ───
+document.getElementById("btn-physics").addEventListener("click",function(){
+  physicsOn=!physicsOn;
+  this.textContent=physicsOn?"Physics On":"Physics Off";
+  this.classList.toggle("active",physicsOn);
+  if(physicsOn){ nodes.forEach(d=>{d.fx=null;d.fy=null;}); simulation.alphaTarget(0.1).restart(); setTimeout(()=>simulation.alphaTarget(0),2000);}
+  else { simulation.stop(); }
+});
+
+document.getElementById("btn-reset").addEventListener("click",()=>{
+  svg.transition().duration(600).call(zoom.transform, d3.zoomIdentity.translate(0,0).scale(1));
+});
+
+svg.on("click",()=>{ closePanel(); });
+
+window.addEventListener("resize",()=>{
+  W=window.innerWidth; H=window.innerHeight-48;
+  svg.attr("width",W).attr("height",H);
+  simulation.force("x", d3.forceX(d=>colX(d.col)).strength(0.8))
+             .force("y", d3.forceY(H/2).strength(0.05))
+             .alpha(0.3).restart();
+});
+
+// ═══════════════════════════════════════════════════════════════
+// TOOLTIP
+// ═══════════════════════════════════════════════════════════════
+const tip = document.getElementById("tooltip");
+function showTip(event,name,rev,role){
+  document.getElementById("tt-name").textContent=name;
+  document.getElementById("tt-rev").textContent=rev;
+  document.getElementById("tt-role").textContent=role;
+  tip.style.display="block";
+  moveTip(event);
+}
+function moveTip(event){ tip.style.left=(event.clientX+14)+"px"; tip.style.top=(event.clientY-10)+"px"; }
+function hideTip(){ tip.style.display="none"; }
+
+// ═══════════════════════════════════════════════════════════════
+// SIDE PANEL — Company Sankey + Details
+// ═══════════════════════════════════════════════════════════════
+const panel = document.getElementById("panel");
+const panelContent = document.getElementById("panel-content");
+let currentCompany = null;
+
+document.getElementById("panel-close-btn").addEventListener("click", closePanel);
+
+function closePanel(){
+  panel.classList.remove("open");
+  currentCompany=null;
+}
+
+function openPanel(id){
+  const co = COMPANIES[id];
+  if(!co) return;
+  currentCompany = id;
+  document.getElementById("panel-company-title").textContent = co.ticker || co.name;
+  renderPanel(co);
+  panel.classList.add("open");
+}
+
+function renderPanel(co){
+  const f = co.fin;
+  const roleLabel = {
+    center:"Center (Subject)",
+    supplier_l1:"Level 1 Supplier",
+    supplier_l2:"Level 2 Supplier",
+    customer_l1:"Level 1 Customer",
+    customer_l2:"Level 2 Customer",
+  }[co.role]||co.role;
+
+  const roleColor = {
+    center:"#34d399",supplier_l1:"#60a5fa",supplier_l2:"#93c5fd",
+    customer_l1:"#f87171",customer_l2:"#fca5a5"
+  }[co.role]||"#666";
+
+  // Connections from this company
+  const outEdges = EDGES.filter(e=>e.s===co.id);
+  const inEdges = EDGES.filter(e=>e.t===co.id);
+
+  // Compute gross_profit if missing
+  const gp = f.gross_profit || (f.revenue - (f.cogs||0)) || 0;
+  const margin = gp && f.revenue ? (gp/f.revenue*100).toFixed(1) : "—";
+
+  panelContent.innerHTML = `
+    <div class="company-header">
+      <div class="company-name">${co.sector}</div>
+      <div class="company-ticker" style="color:${co.color}">${co.ticker||co.name}</div>
+      <div class="company-name" style="font-size:15px;color:var(--text)">${co.name}</div>
+      <div class="company-role-badge" style="background:${roleColor}22;color:${roleColor};border:1px solid ${roleColor}44">${roleLabel}</div>
+      ${co.ticker?`<div style="font-size:10px;color:var(--muted);margin-top:4px;">${f.period}</div>`:''}
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">Revenue</div><div class="kpi-val g">${fmtShort(f.revenue||0)}</div></div>
+      <div class="kpi"><div class="kpi-label">Gross Profit</div><div class="kpi-val g">${fmtShort(gp)} <span style="font-size:10px;color:var(--muted)">(${margin}%)</span></div></div>
+      <div class="kpi"><div class="kpi-label">Net Income</div><div class="kpi-val ${(f.net_income||0)>=0?'g':'r'}">${fmtShort(f.net_income||0)}</div></div>
+      <div class="kpi"><div class="kpi-label">R&D</div><div class="kpi-val b">${fmtShort(f.rnd||0)}</div></div>
+      <div class="kpi"><div class="kpi-label">CapEx</div><div class="kpi-val b">${fmtShort(f.capex||0)}</div></div>
+      <div class="kpi"><div class="kpi-label">Op. Income</div><div class="kpi-val ${(f.op_income||0)>=0?'g':'r'}">${fmtShort(f.op_income||0)}</div></div>
+    </div>
+
+    ${buildSankeyPanel(co)}
+
+    ${co.segments ? buildSegmentBars(co.segments, f.revenue, "Segments") : ''}
+    ${co.geo ? buildSegmentBars(co.geo, f.revenue, "Geography") : ''}
+    ${co.products ? buildSegmentBars(co.products, f.revenue, "Products") : ''}
+
+    ${inEdges.length ? `
+      <div class="section-title">⬇ Inflows (who sends money IN)</div>
+      <div class="connections-list">${inEdges.map(e=>{
+        const src = COMPANIES[e.s];
+        return `<div class="conn-item" onclick="openPanel('${e.s}')">
+          <div><div class="conn-name">${src?.name||e.s}</div><div class="conn-type">${e.type} ${e.est?'<span class="est-tag">⚡ est</span>':'<span class="src-tag">✓ SEC</span>'}</div></div>
+          <div class="conn-flow">${fmt(e.v)}</div>
+        </div>`;
+      }).join('')}</div>` : ''}
+
+    ${outEdges.length ? `
+      <div class="section-title">⬆ Outflows (who gets money OUT)</div>
+      <div class="connections-list">${outEdges.map(e=>{
+        const tgt = COMPANIES[e.t];
+        return `<div class="conn-item" onclick="openPanel('${e.t}')">
+          <div><div class="conn-name">${tgt?.name||e.t}</div><div class="conn-type">${e.label} ${e.est?'<span class="est-tag">⚡ est</span>':'<span class="src-tag">✓ SEC</span>'}</div></div>
+          <div class="conn-flow">${fmt(e.v)}</div>
+        </div>`;
+      }).join('')}</div>` : ''}
+
+    <div class="section-title">Data Source</div>
+    <div style="font-size:11px;color:var(--muted);line-height:1.6;">${co.notes}</div>
+  `;
+
+  // Draw sankey after render
+  if(f.revenue) setTimeout(()=>drawMiniSankey(co), 50);
+}
+
+function buildSegmentBars(segments, totalRev, title){
+  const entries = Object.entries(segments).sort((a,b)=>b[1]-a[1]);
+  const max = entries[0]?.[1]||1;
+  return `<div class="section-title">${title}</div>
+  ${entries.map(([k,v])=>`
+    <div class="bar-row">
+      <div class="bar-label">${k.replace(/_/g,' ')}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${(v/max*100).toFixed(0)}%;background:linear-gradient(90deg,#60a5fa44,#60a5fa88)"></div>
+      </div>
+      <div class="bar-val">${fmtShort(v)} <span style="color:#555c78">(${(v/totalRev*100).toFixed(0)}%)</span></div>
+    </div>`).join('')}`;
+}
+
+function buildSankeyPanel(co){
+  const f = co.fin;
+  if(!f.revenue) return '';
+  return `<div class="section-title">Income Flow (Sankey)</div><div class="sankey-wrap"><svg id="mini-sankey" width="540" height="260"></svg></div>`;
+}
+
+function drawMiniSankey(co){
+  const f = co.fin;
+  const rev = f.revenue;
+  if(!rev) return;
+  const gp = f.gross_profit || (rev - (f.cogs||0));
+  const cogs = f.cogs || (rev - gp);
+
+  // Build data
+  const nodes = [];
+  const links = [];
+  const add = (id,label,color)=>nodes.push({id,label,color});
+  const link = (s,t,v)=>v>0&&links.push({s,t,v});
+
+  add("rev","Revenue","#34d399");
+  add("cogs","COGS",  "#f87171");
+  add("gp",  "Gross Profit","#34d399");
+  if(f.rnd>0) add("rnd","R&D","#f87171");
+  if(f.sga>0) add("sga","SG&A","#f87171");
+  const otherOp = gp - (f.rnd||0) - (f.sga||0) - (f.op_income||0);
+  if(otherOp>0) add("other","Other Op.","#f87171");
+  if(f.op_income) add("oi","Op. Income","#34d399");
+  if(f.net_income) add("ni","Net Income","#34d399");
+  if(f.tax>0) add("tax","Tax","#fbbf24");
+
+  link("rev","cogs",cogs);
+  link("rev","gp",gp);
+  link("gp","rnd",f.rnd||0);
+  link("gp","sga",f.sga||0);
+  link("gp","other",Math.max(0,otherOp));
+  if(f.op_income){
+    link("gp","oi",f.op_income);
+    link("oi","tax",f.tax||0);
+    const netFromOi = f.net_income || (f.op_income - (f.tax||0));
+    link("oi","ni",netFromOi);
+  }
+
+  // D3 sankey
+  const w=540,h=240;
+  const svg2=d3.select("#mini-sankey");
+  svg2.selectAll("*").remove();
+  svg2.attr("width",w).attr("height",h);
+
+  const nodeNames=nodes.map(n=>n.id);
+  const colorMap={};
+  nodes.forEach(n=>colorMap[n.id]=n.color);
+  const labelMap={};
+  nodes.forEach(n=>labelMap[n.id]=n.label);
+
+  const graph={
+    nodes:nodes.map(n=>({...n})),
+    links:links.filter(l=>l.v>0).map(l=>({source:nodeNames.indexOf(l.s),target:nodeNames.indexOf(l.t),value:l.v}))
+      .filter(l=>l.source>=0&&l.target>=0)
+  };
+
+  const sankey=d3.sankey()
+    .nodeId(d=>d.index)
+    .nodeWidth(12).nodePadding(8)
+    .nodeAlign(d3.sankeyLeft)
+    .extent([[1,1],[w-160,h-2]]);
+
+  try {
+    const {nodes:sn,links:sl}=sankey(graph);
+    svg2.append("g").selectAll("path").data(sl).join("path")
+      .attr("d",d3.sankeyLinkHorizontal())
+      .attr("fill","none")
+      .attr("stroke",d=>colorMap[d.target.id]||"#666")
+      .attr("stroke-opacity",0.25)
+      .attr("stroke-width",d=>Math.max(1,d.width));
+    svg2.append("g").selectAll("rect").data(sn).join("rect")
+      .attr("x",d=>d.x0).attr("y",d=>d.y0)
+      .attr("width",d=>d.x1-d.x0).attr("height",d=>Math.max(2,d.y1-d.y0))
+      .attr("fill",d=>colorMap[d.id]||"#666").attr("rx",2);
+    svg2.append("g").selectAll("text").data(sn).join("text")
+      .attr("x",d=>d.x1+5).attr("y",d=>(d.y0+d.y1)/2)
+      .attr("dy","0em").attr("fill","#e8eaf0").attr("font-size","9px")
+      .text(d=>labelMap[d.id]||d.id);
+    svg2.append("g").selectAll("text.val").data(sn).join("text")
+      .attr("x",d=>d.x1+5).attr("y",d=>(d.y0+d.y1)/2)
+      .attr("dy","1.1em").attr("fill","#555c78").attr("font-size","8px")
+      .text(d=>fmtShort(d.value));
+  } catch(e){ console.warn("Sankey error",e); }
+}
+</script>
+</body>
+</html>
