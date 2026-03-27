@@ -1,0 +1,1606 @@
+{
+  "meta": {
+    "generated": "2026-03-27T10:21:02.795598Z",
+    "total_companies": 51,
+    "total_edges": 61,
+    "fx_rates_usd": {
+      "USD": 1.0,
+      "EUR": 1.152339220046997,
+      "JPY": 0.006256060510889971,
+      "KRW": 0.000663666879409492,
+      "TWD": 0.03129009078690739,
+      "HKD": 0.12767299380419925
+    },
+    "data_quality": {
+      "high": 30,
+      "medium": 18,
+      "none": 3
+    },
+    "private_companies": 2,
+    "note": "All financial values in USD. Private companies have null financials."
+  },
+  "companies": [
+    {
+      "id": "MU",
+      "name": "Micron Technology",
+      "ticker": "MU",
+      "exchange": "NASDAQ",
+      "category": "DRAM / NAND Memory",
+      "layer": "center",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 37378000000,
+        "cogs": 22505000000,
+        "gross_profit": 14873000000,
+        "r_and_d": 3798000000,
+        "sga": 1205000000,
+        "operating_income": 9770000000,
+        "net_income": 8539000000,
+        "capex": 15857000000,
+        "da": 8352000000,
+        "ebitda": 18122000000
+      }
+    },
+    {
+      "id": "ASML",
+      "name": "ASML Holding",
+      "ticker": "ASML",
+      "exchange": "NASDAQ+AMS",
+      "category": "EUV / DUV Lithography",
+      "layer": "supplier_l1",
+      "native_currency": "EUR",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": "Dual-listed NASDAQ+Euronext; reports in EUR",
+      "error": null,
+      "financials": {
+        "revenue": 37643811003,
+        "cogs": 17756740743,
+        "gross_profit": 19887070260,
+        "r_and_d": 5414611527,
+        "sga": 6864023798,
+        "operating_income": 13023046461,
+        "net_income": 11073288501,
+        "capex": 1879695736,
+        "da": 1182184806,
+        "ebitda": 14462202913
+      }
+    },
+    {
+      "id": "AMAT",
+      "name": "Applied Materials",
+      "ticker": "AMAT",
+      "exchange": "NASDAQ",
+      "category": "CVD / PVD / CMP / Etch",
+      "layer": "supplier_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 28368000000,
+        "cogs": 14560000000,
+        "gross_profit": 13808000000,
+        "r_and_d": 3570000000,
+        "sga": 1768000000,
+        "operating_income": 8289000000,
+        "net_income": 6998000000,
+        "capex": 2260000000,
+        "da": 435000000,
+        "ebitda": 8724000000
+      }
+    },
+    {
+      "id": "LRCX",
+      "name": "Lam Research",
+      "ticker": "LRCX",
+      "exchange": "NASDAQ",
+      "category": "Etch / Deposition",
+      "layer": "supplier_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 18435591000,
+        "cogs": 9456532000,
+        "gross_profit": 8979059000,
+        "r_and_d": 2096387000,
+        "sga": 981704000,
+        "operating_income": 5900968000,
+        "net_income": 5358217000,
+        "capex": null,
+        "da": 386277000,
+        "ebitda": 6287245000
+      }
+    },
+    {
+      "id": "KLAC",
+      "name": "KLA Corp",
+      "ticker": "KLAC",
+      "exchange": "NASDAQ",
+      "category": "Inspection / Metrology",
+      "layer": "supplier_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 12156162000,
+        "cogs": 4751867000,
+        "gross_profit": null,
+        "r_and_d": 1360334000,
+        "sga": 1029734000,
+        "operating_income": 772070000,
+        "net_income": 4061643000,
+        "capex": 335259000,
+        "da": 394088000,
+        "ebitda": 1166158000
+      }
+    },
+    {
+      "id": "TEL",
+      "name": "Tokyo Electron",
+      "ticker": "8035.T",
+      "exchange": "TSE",
+      "category": "Etch / Dep / Coat / Track",
+      "layer": "supplier_l1",
+      "native_currency": "JPY",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 15212036544,
+        "cogs": 8040789453,
+        "gross_profit": 7171240835,
+        "r_and_d": 1564121481,
+        "sga": 2808764719,
+        "operating_income": 4362476115,
+        "net_income": 3404128974,
+        "capex": 1051262152,
+        "da": 389533608,
+        "ebitda": 4752009723
+      }
+    },
+    {
+      "id": "SCREEN",
+      "name": "Screen Holdings",
+      "ticker": "7735.T",
+      "exchange": "TSE",
+      "category": "Wafer Cleaning / Coating",
+      "layer": "supplier_l1",
+      "native_currency": "JPY",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 3911720700,
+        "cogs": 2439682173,
+        "gross_profit": 1472038526,
+        "r_and_d": null,
+        "sga": 623191212,
+        "operating_income": 848847314,
+        "net_income": 622271571,
+        "capex": 159948699,
+        "da": 80271512,
+        "ebitda": 950746028
+      }
+    },
+    {
+      "id": "KOKUS",
+      "name": "Kokusai Electric",
+      "ticker": "6525.T",
+      "exchange": "TSE",
+      "category": "Batch Thermal Processing",
+      "layer": "supplier_l1",
+      "native_currency": "JPY",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 1494779306,
+        "cogs": 858268941,
+        "gross_profit": 636510365,
+        "r_and_d": null,
+        "sga": 316043665,
+        "operating_income": 321061025,
+        "net_income": 225243203,
+        "capex": 173117706,
+        "da": 78982764,
+        "ebitda": 405724292
+      }
+    },
+    {
+      "id": "ENTG",
+      "name": "Entegris",
+      "ticker": "ENTG",
+      "exchange": "NASDAQ",
+      "category": "Materials / Filtration / CMP",
+      "layer": "supplier_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 514997000,
+        "cogs": 335405000,
+        "gross_profit": 196688000,
+        "r_and_d": 15547000,
+        "sga": 68506000,
+        "operating_income": 101496000,
+        "net_income": 92418000,
+        "capex": 62598000,
+        "da": 37857000,
+        "ebitda": 139353000
+      }
+    },
+    {
+      "id": "ACLS",
+      "name": "Axcelis Technologies",
+      "ticker": "ACLS",
+      "exchange": "NASDAQ",
+      "category": "Ion Implantation",
+      "layer": "supplier_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 839048000,
+        "cogs": 462200000,
+        "gross_profit": 376848000,
+        "r_and_d": 108958000,
+        "sga": 83207000,
+        "operating_income": 119315000,
+        "net_income": 120238000,
+        "capex": 11295000,
+        "da": 17613000,
+        "ebitda": 136928000
+      }
+    },
+    {
+      "id": "MKSI",
+      "name": "MKS Instruments",
+      "ticker": "MKSI",
+      "exchange": "NASDAQ",
+      "category": "Gas Delivery / RF Power / Laser",
+      "layer": "supplier_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 7562000000,
+        "cogs": 4883000000,
+        "gross_profit": 2679000000,
+        "r_and_d": null,
+        "sga": 1426000000,
+        "operating_income": 1248000000,
+        "net_income": 810000000,
+        "capex": 117000000,
+        "da": 148000000,
+        "ebitda": 1396000000
+      }
+    },
+    {
+      "id": "ONTO",
+      "name": "Onto Innovation",
+      "ticker": "ONTO",
+      "exchange": "NASDAQ",
+      "category": "Advanced Metrology",
+      "layer": "supplier_l1",
+      "native_currency": "USD",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": "SEC XBRL unavailable; using yfinance",
+      "error": null,
+      "financials": {
+        "revenue": 1005263000,
+        "cogs": 505493000,
+        "gross_profit": 499770000,
+        "r_and_d": 131978000,
+        "sga": 107077000,
+        "operating_income": 151351000,
+        "net_income": 136759000,
+        "capex": 28513000,
+        "da": 60439000,
+        "ebitda": 211790000
+      }
+    },
+    {
+      "id": "LIN",
+      "name": "Linde",
+      "ticker": "LIN",
+      "exchange": "NYSE",
+      "category": "Specialty Gases (N\u2082/H\u2082/NF\u2083)",
+      "layer": "supplier_l1",
+      "native_currency": "USD",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": "Linde plc post-merger; using yfinance",
+      "error": null,
+      "financials": {
+        "revenue": 33986000000,
+        "cogs": 17389000000,
+        "gross_profit": 16597000000,
+        "r_and_d": 147000000,
+        "sga": 2083000000,
+        "operating_income": 9254000000,
+        "net_income": 6898000000,
+        "capex": 5261000000,
+        "da": 3763000000,
+        "ebitda": 13124000000
+      }
+    },
+    {
+      "id": "APD",
+      "name": "Air Products",
+      "ticker": "APD",
+      "exchange": "NYSE",
+      "category": "Specialty Gases",
+      "layer": "supplier_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 12037300000,
+        "cogs": 8256000000,
+        "gross_profit": 2998200000,
+        "r_and_d": 96300000,
+        "sga": 906100000,
+        "operating_income": 877000000,
+        "net_income": 394500000,
+        "capex": 7022600000,
+        "da": 1564200000,
+        "ebitda": 2441200000
+      }
+    },
+    {
+      "id": "AIRL",
+      "name": "Air Liquide",
+      "ticker": "AI.PA",
+      "exchange": "Euronext",
+      "category": "Specialty Gases / Chemicals",
+      "layer": "supplier_l1",
+      "native_currency": "EUR",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 31044249056,
+        "cogs": 11121456281,
+        "gross_profit": 19922792775,
+        "r_and_d": null,
+        "sga": 13891103596,
+        "operating_income": 6031689179,
+        "net_income": 4053814142,
+        "capex": 4428900558,
+        "da": 2954021591,
+        "ebitda": 8675616286
+      }
+    },
+    {
+      "id": "DD",
+      "name": "DuPont",
+      "ticker": "DD",
+      "exchange": "NYSE",
+      "category": "Specialty Films / Chemicals",
+      "layer": "supplier_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": "DuPont de Nemours; spun off 2019",
+      "error": null,
+      "financials": {
+        "revenue": 6849000000,
+        "cogs": 4486000000,
+        "gross_profit": 20644000000,
+        "r_and_d": 193000000,
+        "sga": 1019000000,
+        "operating_income": null,
+        "net_income": 779000000,
+        "capex": null,
+        "da": 647000000,
+        "ebitda": null
+      }
+    },
+    {
+      "id": "CBT",
+      "name": "Cabot Corp",
+      "ticker": "CBT",
+      "exchange": "NYSE",
+      "category": "CMP Slurries",
+      "layer": "supplier_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 3713000000,
+        "cogs": 2773000000,
+        "gross_profit": 940000000,
+        "r_and_d": 59000000,
+        "sga": 260000000,
+        "operating_income": 621000000,
+        "net_income": 331000000,
+        "capex": 274000000,
+        "da": 154000000,
+        "ebitda": 775000000
+      }
+    },
+    {
+      "id": "SHE",
+      "name": "Shin-Etsu Chemical",
+      "ticker": "4063.T",
+      "exchange": "TSE",
+      "category": "Silicon Wafers / Photoresist",
+      "layer": "supplier_l1",
+      "native_currency": "JPY",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 16023328727,
+        "cogs": 9866601945,
+        "gross_profit": 6156720526,
+        "r_and_d": null,
+        "sga": 1514066741,
+        "operating_income": 4642653785,
+        "net_income": 3340867690,
+        "capex": 2770415068,
+        "da": 1491175815,
+        "ebitda": 6133829601
+      }
+    },
+    {
+      "id": "SUMCO",
+      "name": "Sumco",
+      "ticker": "3436.T",
+      "exchange": "TSE",
+      "category": "Silicon Wafers",
+      "layer": "supplier_l1",
+      "native_currency": "JPY",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": null,
+        "cogs": null,
+        "gross_profit": null,
+        "r_and_d": null,
+        "sga": null,
+        "operating_income": null,
+        "net_income": null,
+        "capex": 1546798449,
+        "da": 494141196,
+        "ebitda": null
+      }
+    },
+    {
+      "id": "SILT",
+      "name": "Siltronic",
+      "ticker": "WAF.DE",
+      "exchange": "XETRA",
+      "category": "Silicon Wafers",
+      "layer": "supplier_l1",
+      "native_currency": "EUR",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 1551855228,
+        "cogs": 1423715106,
+        "gross_profit": 128140121,
+        "r_and_d": 90228161,
+        "sga": 41253744,
+        "operating_income": 26042866,
+        "net_income": 79741874,
+        "capex": 438004138,
+        "da": 395598054,
+        "ebitda": 383383259
+      }
+    },
+    {
+      "id": "GW",
+      "name": "GlobalWafers",
+      "ticker": "6488.TW",
+      "exchange": "TWSE",
+      "category": "Silicon Wafers",
+      "layer": "supplier_l1",
+      "native_currency": "TWD",
+      "data_source": "yfinance",
+      "confidence": "none",
+      "note": null,
+      "error": "yfinance failed for 6488.TW: Empty income statement",
+      "financials": {
+        "revenue": null,
+        "cogs": null,
+        "gross_profit": null,
+        "r_and_d": null,
+        "sga": null,
+        "operating_income": null,
+        "net_income": null,
+        "capex": null,
+        "da": null,
+        "ebitda": null
+      }
+    },
+    {
+      "id": "SKSIL",
+      "name": "SK Siltron",
+      "ticker": null,
+      "exchange": "Private",
+      "category": "Silicon Wafers",
+      "layer": "supplier_l1",
+      "native_currency": null,
+      "data_source": "private",
+      "confidence": "none",
+      "note": "SK Group subsidiary; no public financials",
+      "error": null,
+      "financials": {
+        "revenue": null,
+        "cogs": null,
+        "gross_profit": null,
+        "r_and_d": null,
+        "sga": null,
+        "operating_income": null,
+        "net_income": null,
+        "capex": null,
+        "da": null,
+        "ebitda": null
+      }
+    },
+    {
+      "id": "TOK",
+      "name": "Tokyo Ohka Kogyo",
+      "ticker": "4186.T",
+      "exchange": "TSE",
+      "category": "Photoresists / Developers",
+      "layer": "supplier_l1",
+      "native_currency": "JPY",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": null,
+        "cogs": null,
+        "gross_profit": null,
+        "r_and_d": null,
+        "sga": null,
+        "operating_income": null,
+        "net_income": null,
+        "capex": 159567079,
+        "da": 52131752,
+        "ebitda": null
+      }
+    },
+    {
+      "id": "JSR",
+      "name": "JSR Corporation",
+      "ticker": null,
+      "exchange": "Private",
+      "category": "Photoresists",
+      "layer": "supplier_l1",
+      "native_currency": null,
+      "data_source": "private",
+      "confidence": "none",
+      "note": "Taken private by Japan Gov in 2023; last TSE listing ~\u00a5400B rev",
+      "error": null,
+      "financials": {
+        "revenue": null,
+        "cogs": null,
+        "gross_profit": null,
+        "r_and_d": null,
+        "sga": null,
+        "operating_income": null,
+        "net_income": null,
+        "capex": null,
+        "da": null,
+        "ebitda": null
+      }
+    },
+    {
+      "id": "AMKR",
+      "name": "Amkor Technology",
+      "ticker": "AMKR",
+      "exchange": "NASDAQ",
+      "category": "Advanced Packaging",
+      "layer": "supplier_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 6707981000,
+        "cogs": 5769382000,
+        "gross_profit": 938599000,
+        "r_and_d": 166743000,
+        "sga": 304471000,
+        "operating_income": 467385000,
+        "net_income": 373895000,
+        "capex": 904614000,
+        "da": 642008000,
+        "ebitda": 1109393000
+      }
+    },
+    {
+      "id": "ASE",
+      "name": "ASE Technology",
+      "ticker": "ASX",
+      "exchange": "NYSE ADR",
+      "category": "Packaging / Test",
+      "layer": "supplier_l1",
+      "native_currency": "TWD",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": "Trades as ASX on NYSE; reports TWD",
+      "error": null,
+      "financials": {
+        "revenue": 20194240039,
+        "cogs": 16621134644,
+        "gross_profit": 3573105395,
+        "r_and_d": 1027925197,
+        "sga": 725335188,
+        "operating_income": 1613119985,
+        "net_income": 1272198644,
+        "capex": 5189410335,
+        "da": 2110198622,
+        "ebitda": 3949406034
+      }
+    },
+    {
+      "id": "UCTT",
+      "name": "Ultra Clean Holdings",
+      "ticker": "UCTT",
+      "exchange": "NASDAQ",
+      "category": "Subsystems / Parts Cleaning",
+      "layer": "supplier_l2",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": "Key supplier to AMAT, LRCX, KLAC",
+      "error": null,
+      "financials": {
+        "revenue": 2097600000,
+        "cogs": 1731100000,
+        "gross_profit": 322900000,
+        "r_and_d": 32000000,
+        "sga": 186000000,
+        "operating_income": 107400000,
+        "net_income": 181200000,
+        "capex": 50300000,
+        "da": 47900000,
+        "ebitda": 155300000
+      }
+    },
+    {
+      "id": "VECO",
+      "name": "Veeco Instruments",
+      "ticker": "VECO",
+      "exchange": "NASDAQ",
+      "category": "Ion Beam / MOCVD / MBE",
+      "layer": "supplier_l2",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 484756000,
+        "cogs": 398885000,
+        "gross_profit": 265409000,
+        "r_and_d": 119641000,
+        "sga": 98906000,
+        "operating_income": 35707000,
+        "net_income": 35390000,
+        "capex": 16200000,
+        "da": 20020000,
+        "ebitda": 55727000
+      }
+    },
+    {
+      "id": "AZTA",
+      "name": "Azenta (Brooks Auto)",
+      "ticker": "AZTA",
+      "exchange": "NASDAQ",
+      "category": "Wafer Automation / Storage",
+      "layer": "supplier_l2",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 356407000,
+        "cogs": 122972000,
+        "gross_profit": null,
+        "r_and_d": null,
+        "sga": 60921000,
+        "operating_income": 98174000,
+        "net_income": 56612000,
+        "capex": 314524000,
+        "da": 71840000,
+        "ebitda": 170014000
+      }
+    },
+    {
+      "id": "FORM",
+      "name": "FormFactor",
+      "ticker": "FORM",
+      "exchange": "NASDAQ",
+      "category": "Probe Cards / Test",
+      "layer": "supplier_l2",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 784993000,
+        "cogs": 476142000,
+        "gross_profit": 308851000,
+        "r_and_d": 115682000,
+        "sga": 133074000,
+        "operating_income": 57070000,
+        "net_income": 54361000,
+        "capex": 103658000,
+        "da": 37589000,
+        "ebitda": 94659000
+      }
+    },
+    {
+      "id": "COHU",
+      "name": "Cohu",
+      "ticker": "COHU",
+      "exchange": "NASDAQ",
+      "category": "Test Handlers / Contactors",
+      "layer": "supplier_l2",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 352704000,
+        "cogs": 364225000,
+        "gross_profit": 140718000,
+        "r_and_d": 92213000,
+        "sga": 123566000,
+        "operating_income": 69769000,
+        "net_income": 74273000,
+        "capex": 20958000,
+        "da": 50685000,
+        "ebitda": 120454000
+      }
+    },
+    {
+      "id": "KLIC",
+      "name": "Kulicke & Soffa",
+      "ticker": "KLIC",
+      "exchange": "NASDAQ",
+      "category": "Wire Bonding / Die Attach",
+      "layer": "supplier_l2",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 1909122000,
+        "cogs": 1453476000,
+        "gross_profit": 455646000,
+        "r_and_d": null,
+        "sga": 230227000,
+        "operating_income": 220317000,
+        "net_income": 167347000,
+        "capex": 58000000,
+        "da": 62168000,
+        "ebitda": 282485000
+      }
+    },
+    {
+      "id": "NIKON",
+      "name": "Nikon",
+      "ticker": "7731.T",
+      "exchange": "TSE",
+      "category": "DUV Lithography (ArF/KrF)",
+      "layer": "supplier_l2",
+      "native_currency": "JPY",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 4474866243,
+        "cogs": 2523181813,
+        "gross_profit": 1951690685,
+        "r_and_d": null,
+        "sga": 1846507540,
+        "operating_income": 15158435,
+        "net_income": 38305859,
+        "capex": 435797175,
+        "da": 276449058,
+        "ebitda": 348562667
+      }
+    },
+    {
+      "id": "MRKDE",
+      "name": "Merck KGaA",
+      "ticker": "MRK.DE",
+      "exchange": "XETRA",
+      "category": "Photoresist Chemicals / EUV Materials",
+      "layer": "supplier_l2",
+      "native_currency": "EUR",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": "Different from US Merck (MRK)",
+      "error": null,
+      "financials": {
+        "revenue": 24378888539,
+        "cogs": 9991933377,
+        "gross_profit": 14386955162,
+        "r_and_d": 2626181082,
+        "sga": 1604056194,
+        "operating_income": 4630098986,
+        "net_income": 3200046014,
+        "capex": 2516708857,
+        "da": 2459091896,
+        "ebitda": 6870246430
+      }
+    },
+    {
+      "id": "PTEC",
+      "name": "Powertech Technology",
+      "ticker": "6239.TW",
+      "exchange": "TWSE",
+      "category": "Memory Module Packaging",
+      "layer": "supplier_l2",
+      "native_currency": "TWD",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 2344545225,
+        "cogs": 1946247683,
+        "gross_profit": 398297542,
+        "r_and_d": 87839107,
+        "sga": 49194406,
+        "operating_income": 254445981,
+        "net_income": 173220941,
+        "capex": 814097134,
+        "da": 383510753,
+        "ebitda": 666713672
+      }
+    },
+    {
+      "id": "NVDA",
+      "name": "NVIDIA",
+      "ticker": "NVDA",
+      "exchange": "NASDAQ",
+      "category": "AI GPUs / HBM3E (#1 customer ~17%)",
+      "layer": "customer_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 215938000000,
+        "cogs": 62475000000,
+        "gross_profit": 153463000000,
+        "r_and_d": 18497000000,
+        "sga": 4579000000,
+        "operating_income": 130387000000,
+        "net_income": 120067000000,
+        "capex": 138735000,
+        "da": 2843000000,
+        "ebitda": 133230000000
+      }
+    },
+    {
+      "id": "AMZN",
+      "name": "Amazon",
+      "ticker": "AMZN",
+      "exchange": "NASDAQ",
+      "category": "AWS Data Center DRAM / NAND",
+      "layer": "customer_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 716924000000,
+        "cogs": 356414000000,
+        "gross_profit": 5531000000,
+        "r_and_d": null,
+        "sga": 11172000000,
+        "operating_income": 79975000000,
+        "net_income": 77670000000,
+        "capex": 7417000000,
+        "da": 65756000000,
+        "ebitda": 145731000000
+      }
+    },
+    {
+      "id": "AAPL",
+      "name": "Apple",
+      "ticker": "AAPL",
+      "exchange": "NASDAQ",
+      "category": "iPhone / Mac NAND + DRAM",
+      "layer": "customer_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 416161000000,
+        "cogs": 220960000000,
+        "gross_profit": 195201000000,
+        "r_and_d": 34550000000,
+        "sga": 27601000000,
+        "operating_income": 133050000000,
+        "net_income": 112010000000,
+        "capex": 12715000000,
+        "da": 11698000000,
+        "ebitda": 144748000000
+      }
+    },
+    {
+      "id": "MSFT",
+      "name": "Microsoft",
+      "ticker": "MSFT",
+      "exchange": "NASDAQ",
+      "category": "Azure Data Center",
+      "layer": "customer_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 281724000000,
+        "cogs": 87831000000,
+        "gross_profit": 193893000000,
+        "r_and_d": 32488000000,
+        "sga": 7223000000,
+        "operating_income": 128528000000,
+        "net_income": 101832000000,
+        "capex": 64551000000,
+        "da": 22000000000,
+        "ebitda": 150528000000
+      }
+    },
+    {
+      "id": "GOOGL",
+      "name": "Alphabet",
+      "ticker": "GOOGL",
+      "exchange": "NASDAQ",
+      "category": "GCP / AI Infra DRAM",
+      "layer": "customer_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 402836000000,
+        "cogs": 162535000000,
+        "gross_profit": null,
+        "r_and_d": 61087000000,
+        "sga": 21482000000,
+        "operating_income": 129039000000,
+        "net_income": 132170000000,
+        "capex": 91447000000,
+        "da": 21136000000,
+        "ebitda": 150175000000
+      }
+    },
+    {
+      "id": "META",
+      "name": "Meta",
+      "ticker": "META",
+      "exchange": "NASDAQ",
+      "category": "Data Center Memory",
+      "layer": "customer_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 200966000000,
+        "cogs": 36175000000,
+        "gross_profit": null,
+        "r_and_d": 57372000000,
+        "sga": 12152000000,
+        "operating_income": 83276000000,
+        "net_income": 60458000000,
+        "capex": 69691000000,
+        "da": 18616000000,
+        "ebitda": 101892000000
+      }
+    },
+    {
+      "id": "DELL",
+      "name": "Dell Technologies",
+      "ticker": "DELL",
+      "exchange": "NYSE",
+      "category": "PC + Server Memory Modules",
+      "layer": "customer_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 113538000000,
+        "cogs": 90831000000,
+        "gross_profit": 22707000000,
+        "r_and_d": 3142000000,
+        "sga": 11416000000,
+        "operating_income": 8149000000,
+        "net_income": 5936000000,
+        "capex": 2633000000,
+        "da": 3029000000,
+        "ebitda": 11178000000
+      }
+    },
+    {
+      "id": "HPE",
+      "name": "HP Enterprise",
+      "ticker": "HPE",
+      "exchange": "NYSE",
+      "category": "Server Memory",
+      "layer": "customer_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 34296000000,
+        "cogs": 14079000000,
+        "gross_profit": null,
+        "r_and_d": 2518000000,
+        "sga": 5704000000,
+        "operating_income": 437000000,
+        "net_income": 57000000,
+        "capex": null,
+        "da": 2737000000,
+        "ebitda": 3174000000
+      }
+    },
+    {
+      "id": "HPQ",
+      "name": "HP Inc",
+      "ticker": "HPQ",
+      "exchange": "NYSE",
+      "category": "PC Memory",
+      "layer": "customer_l1",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": "HP Inc post-2015 split; CIK 0001637459",
+      "error": null,
+      "financials": {
+        "revenue": 18205000000,
+        "cogs": 16633000000,
+        "gross_profit": 8309000000,
+        "r_and_d": 167000000,
+        "sga": 12978000000,
+        "operating_income": 4669000000,
+        "net_income": 5846000000,
+        "capex": 801000000,
+        "da": 968000000,
+        "ebitda": 5637000000
+      }
+    },
+    {
+      "id": "LNVO",
+      "name": "Lenovo",
+      "ticker": "0992.HK",
+      "exchange": "HKEX",
+      "category": "PC / Server Memory",
+      "layer": "customer_l1",
+      "native_currency": "HKD",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 8819263307,
+        "cogs": 7402398215,
+        "gross_profit": 1416865093,
+        "r_and_d": 292141855,
+        "sga": 360370303,
+        "operating_income": 276303893,
+        "net_income": 176756238,
+        "capex": 146971022,
+        "da": 181185214,
+        "ebitda": 468575846
+      }
+    },
+    {
+      "id": "SAMSG",
+      "name": "Samsung Electronics",
+      "ticker": "005930.KS",
+      "exchange": "KRX",
+      "category": "Devices / System Memory",
+      "layer": "customer_l1",
+      "native_currency": "KRW",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": "Also competitor in DRAM/NAND",
+      "error": null,
+      "financials": {
+        "revenue": 221403211825,
+        "cogs": 134217011818,
+        "gross_profit": 87186200006,
+        "r_and_d": 25047048186,
+        "sga": 5057743567,
+        "operating_income": 28936573456,
+        "net_income": 29374530548,
+        "capex": 34612317648,
+        "da": 31143624874,
+        "ebitda": 64384876434
+      }
+    },
+    {
+      "id": "TSLA",
+      "name": "Tesla",
+      "ticker": "TSLA",
+      "exchange": "NASDAQ",
+      "category": "EV / FSD Chip Memory",
+      "layer": "customer_l2",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 94827000000,
+        "cogs": 77733000000,
+        "gross_profit": 17094000000,
+        "r_and_d": 6411000000,
+        "sga": 5834000000,
+        "operating_income": 4355000000,
+        "net_income": 3794000000,
+        "capex": 8527000000,
+        "da": 5030000000,
+        "ebitda": 9385000000
+      }
+    },
+    {
+      "id": "QCOM",
+      "name": "Qualcomm",
+      "ticker": "QCOM",
+      "exchange": "NASDAQ",
+      "category": "Mobile SoC (LPDDR Micron)",
+      "layer": "customer_l2",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 44284000000,
+        "cogs": 19738000000,
+        "gross_profit": null,
+        "r_and_d": 9042000000,
+        "sga": 3110000000,
+        "operating_income": 12355000000,
+        "net_income": 5541000000,
+        "capex": null,
+        "da": 1602000000,
+        "ebitda": 13957000000
+      }
+    },
+    {
+      "id": "AMD",
+      "name": "AMD",
+      "ticker": "AMD",
+      "exchange": "NASDAQ",
+      "category": "GPU / CPU (GDDR / HBM)",
+      "layer": "customer_l2",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 34639000000,
+        "cogs": 17487000000,
+        "gross_profit": 17152000000,
+        "r_and_d": 8091000000,
+        "sga": 4144000000,
+        "operating_income": 3694000000,
+        "net_income": 4335000000,
+        "capex": 974000000,
+        "da": 521000000,
+        "ebitda": 4215000000
+      }
+    },
+    {
+      "id": "AVGO",
+      "name": "Broadcom",
+      "ticker": "AVGO",
+      "exchange": "NASDAQ",
+      "category": "Network / Custom AI Silicon",
+      "layer": "customer_l2",
+      "native_currency": "USD",
+      "data_source": "sec_xbrl",
+      "confidence": "high",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 8428000000,
+        "cogs": 4098000000,
+        "gross_profit": 4330000000,
+        "r_and_d": 2373000000,
+        "sga": 716000000,
+        "operating_income": 694000000,
+        "net_income": 652000000,
+        "capex": 262000000,
+        "da": 178000000,
+        "ebitda": 872000000
+      }
+    },
+    {
+      "id": "SKHYN",
+      "name": "SK Hynix",
+      "ticker": "000660.KS",
+      "exchange": "KRX",
+      "category": "Memory Competitor / NVIDIA HBM",
+      "layer": "customer_l2",
+      "native_currency": "KRW",
+      "data_source": "yfinance",
+      "confidence": "medium",
+      "note": null,
+      "error": null,
+      "financials": {
+        "revenue": 64473030642,
+        "cogs": 25521897193,
+        "gross_profit": 38951133449,
+        "r_and_d": 4291029131,
+        "sga": 411612835,
+        "operating_income": 31329270419,
+        "net_income": 28484109270,
+        "capex": 18967163384,
+        "da": 9244965907,
+        "ebitda": 43350312408
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "UCTT",
+      "target": "AMAT",
+      "label": "subsystems"
+    },
+    {
+      "source": "UCTT",
+      "target": "LRCX",
+      "label": "subsystems"
+    },
+    {
+      "source": "UCTT",
+      "target": "KLAC",
+      "label": "subsystems"
+    },
+    {
+      "source": "UCTT",
+      "target": "TEL",
+      "label": "subsystems"
+    },
+    {
+      "source": "VECO",
+      "target": "AMAT",
+      "label": "ion beam tools"
+    },
+    {
+      "source": "AZTA",
+      "target": "AMAT",
+      "label": "automation"
+    },
+    {
+      "source": "AZTA",
+      "target": "LRCX",
+      "label": "automation"
+    },
+    {
+      "source": "FORM",
+      "target": "KLAC",
+      "label": "probe cards"
+    },
+    {
+      "source": "COHU",
+      "target": "AMKR",
+      "label": "test handlers"
+    },
+    {
+      "source": "COHU",
+      "target": "ASE",
+      "label": "test handlers"
+    },
+    {
+      "source": "KLIC",
+      "target": "AMKR",
+      "label": "wire bonding"
+    },
+    {
+      "source": "KLIC",
+      "target": "ASE",
+      "label": "wire bonding"
+    },
+    {
+      "source": "NIKON",
+      "target": "MU",
+      "label": "DUV lithography"
+    },
+    {
+      "source": "MRKDE",
+      "target": "TOK",
+      "label": "photoresist chemicals"
+    },
+    {
+      "source": "MRKDE",
+      "target": "SHE",
+      "label": "EUV materials"
+    },
+    {
+      "source": "PTEC",
+      "target": "MU",
+      "label": "memory packaging"
+    },
+    {
+      "source": "ASML",
+      "target": "MU",
+      "label": "EUV/DUV machines"
+    },
+    {
+      "source": "AMAT",
+      "target": "MU",
+      "label": "dep/etch/CMP tools"
+    },
+    {
+      "source": "LRCX",
+      "target": "MU",
+      "label": "etch/dep tools"
+    },
+    {
+      "source": "KLAC",
+      "target": "MU",
+      "label": "inspection tools"
+    },
+    {
+      "source": "TEL",
+      "target": "MU",
+      "label": "etch/coat tools"
+    },
+    {
+      "source": "SCREEN",
+      "target": "MU",
+      "label": "cleaning tools"
+    },
+    {
+      "source": "KOKUS",
+      "target": "MU",
+      "label": "thermal tools"
+    },
+    {
+      "source": "ENTG",
+      "target": "MU",
+      "label": "materials/chemicals"
+    },
+    {
+      "source": "ACLS",
+      "target": "MU",
+      "label": "ion implant"
+    },
+    {
+      "source": "MKSI",
+      "target": "MU",
+      "label": "gas delivery"
+    },
+    {
+      "source": "ONTO",
+      "target": "MU",
+      "label": "metrology"
+    },
+    {
+      "source": "LIN",
+      "target": "MU",
+      "label": "specialty gases"
+    },
+    {
+      "source": "APD",
+      "target": "MU",
+      "label": "specialty gases"
+    },
+    {
+      "source": "AIRL",
+      "target": "MU",
+      "label": "specialty gases"
+    },
+    {
+      "source": "DD",
+      "target": "MU",
+      "label": "specialty films"
+    },
+    {
+      "source": "CBT",
+      "target": "MU",
+      "label": "CMP slurry"
+    },
+    {
+      "source": "SHE",
+      "target": "MU",
+      "label": "silicon wafers / photoresist"
+    },
+    {
+      "source": "SUMCO",
+      "target": "MU",
+      "label": "silicon wafers"
+    },
+    {
+      "source": "SILT",
+      "target": "MU",
+      "label": "silicon wafers"
+    },
+    {
+      "source": "GW",
+      "target": "MU",
+      "label": "silicon wafers"
+    },
+    {
+      "source": "SKSIL",
+      "target": "MU",
+      "label": "silicon wafers"
+    },
+    {
+      "source": "TOK",
+      "target": "MU",
+      "label": "photoresist"
+    },
+    {
+      "source": "JSR",
+      "target": "MU",
+      "label": "photoresist"
+    },
+    {
+      "source": "AMKR",
+      "target": "MU",
+      "label": "packaging services"
+    },
+    {
+      "source": "ASE",
+      "target": "MU",
+      "label": "packaging/test services"
+    },
+    {
+      "source": "MU",
+      "target": "NVDA",
+      "label": "HBM3E / GDDR"
+    },
+    {
+      "source": "MU",
+      "target": "AMZN",
+      "label": "DRAM / NAND"
+    },
+    {
+      "source": "MU",
+      "target": "AAPL",
+      "label": "LPDDR / NAND"
+    },
+    {
+      "source": "MU",
+      "target": "MSFT",
+      "label": "DRAM / NAND"
+    },
+    {
+      "source": "MU",
+      "target": "GOOGL",
+      "label": "DRAM / NAND"
+    },
+    {
+      "source": "MU",
+      "target": "META",
+      "label": "DRAM / NAND"
+    },
+    {
+      "source": "MU",
+      "target": "DELL",
+      "label": "memory modules"
+    },
+    {
+      "source": "MU",
+      "target": "HPE",
+      "label": "memory modules"
+    },
+    {
+      "source": "MU",
+      "target": "HPQ",
+      "label": "memory modules"
+    },
+    {
+      "source": "MU",
+      "target": "LNVO",
+      "label": "memory modules"
+    },
+    {
+      "source": "MU",
+      "target": "SAMSG",
+      "label": "components"
+    },
+    {
+      "source": "NVDA",
+      "target": "TSLA",
+      "label": "AI chips"
+    },
+    {
+      "source": "NVDA",
+      "target": "AMD",
+      "label": "GPU competition / resale"
+    },
+    {
+      "source": "AMZN",
+      "target": "QCOM",
+      "label": "AWS Graviton \u2192 Qualcomm comparison"
+    },
+    {
+      "source": "AAPL",
+      "target": "TSLA",
+      "label": "shared supply chain"
+    },
+    {
+      "source": "MSFT",
+      "target": "AVGO",
+      "label": "Azure custom silicon"
+    },
+    {
+      "source": "NVDA",
+      "target": "AVGO",
+      "label": "network chips in AI clusters"
+    },
+    {
+      "source": "SAMSG",
+      "target": "SKHYN",
+      "label": "same ecosystem / competition"
+    },
+    {
+      "source": "AMZN",
+      "target": "TSLA",
+      "label": "AWS cloud services"
+    },
+    {
+      "source": "GOOGL",
+      "target": "AVGO",
+      "label": "TPU custom ASIC collab"
+    }
+  ]
+}
