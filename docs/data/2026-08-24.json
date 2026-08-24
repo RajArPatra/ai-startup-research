@@ -1,0 +1,141 @@
+{
+  "date": "2026-08-24",
+  "generated_at": "2026-08-24T04:09:03.082672+00:00",
+  "sources": [
+    "TechCrunch",
+    "The Verge",
+    "Hacker News",
+    "Crunchbase News",
+    "Bens Bites",
+    "Import AI",
+    "The Batch",
+    "The Neuron",
+    "Semafor Tech",
+    "Reddit ML",
+    "Latent Space"
+  ],
+  "reports": {
+    "1_Funding_MarketMap": {
+      "title": "Funding & Market Map",
+      "questions": [
+        "Which AI startups raised Series A/B in the last 6 months? What's the avg round size trending?",
+        "Who are the most active AI-focused VCs right now and what thesis are they backing?",
+        "Which segments are getting overcrowded vs. still whitespace?"
+      ],
+      "analysis": "Analysis unavailable — all AI providers failed. Will retry next run."
+    },
+    "2_Foundation_Models": {
+      "title": "Foundation Model Layer",
+      "questions": [
+        "What's the competitive landscape beyond OpenAI/Anthropic/Google?",
+        "How is open-source vs. closed-source playing out? What's the moat argument?",
+        "What's happening with cost curves — are inference costs dropping fast enough?"
+      ],
+      "analysis": "Analysis unavailable — all AI providers failed. Will retry next run."
+    },
+    "3_Application_Layer": {
+      "title": "Application Layer — AI-Native Startups",
+      "questions": [
+        "Which verticals have breakout AI-native companies? (Legal, healthcare, code, sales, finance, HR)",
+        "What's the 'wrapper' vs. 'real product' distinction?",
+        "What distribution strategies are working? (PLG, enterprise sales, API-first, embedded AI)"
+      ],
+      "analysis": "Analysis unavailable — all AI providers failed. Will retry next run."
+    },
+    "4_Infrastructure": {
+      "title": "Infrastructure / Picks-and-Shovels",
+      "questions": [
+        "Who's winning in AI infra? (Vector DBs, evaluation, observability, orchestration)",
+        "What's the data pipeline stack for AI companies?",
+        "GPU/compute economics — who's building alternatives to NVIDIA dependency?"
+      ],
+      "analysis": "Analysis unavailable — all AI providers failed. Will retry next run."
+    },
+    "5_AI_Agents": {
+      "title": "AI Agents & Autonomy",
+      "questions": [
+        "Which companies are building agentic systems that actually work in production?",
+        "What's the real state of AI agents vs. the hype?",
+        "How are enterprises actually adopting agents?"
+      ],
+      "analysis": "Analysis unavailable — all AI providers failed. Will retry next run."
+    },
+    "6_Business_Model_GTM": {
+      "title": "Business Model & GTM",
+      "questions": [
+        "What pricing models are emerging? (Per-seat, per-outcome, usage-based, hybrid)",
+        "How are AI startups handling the 'margin problem'?",
+        "What does retention/churn look like for AI products vs. traditional SaaS?"
+      ],
+      "analysis": "Analysis unavailable — all AI providers failed. Will retry next run."
+    },
+    "7_Talent_Teams": {
+      "title": "Talent & Team Composition",
+      "questions": [
+        "What does a founding team look like for a successful AI startup?",
+        "Where is AI talent flowing — big labs, startups, or corporate AI teams?",
+        "What roles are startups hiring for most aggressively?"
+      ],
+      "analysis": "Analysis unavailable — all AI providers failed. Will retry next run."
+    },
+    "8_Regulation_Risk": {
+      "title": "Regulation & Risk",
+      "questions": [
+        "How are EU AI Act, US executive orders, and other regulation shaping startup strategy?",
+        "What are the IP/copyright risks startups are navigating?",
+        "How are startups handling safety, bias, and trust?"
+      ],
+      "analysis": "Analysis unavailable — all AI providers failed. Will retry next run."
+    }
+  },
+  "scrape_stats": {
+    "total_chars": 31555,
+    "source_count": 11,
+    "sources": {
+      "TechCrunch": {
+        "chars": 7836,
+        "status": "ok"
+      },
+      "The Verge": {
+        "chars": 16372,
+        "status": "ok"
+      },
+      "Hacker News": {
+        "chars": 3923,
+        "status": "ok"
+      },
+      "Crunchbase News": {
+        "chars": 42,
+        "status": "thin"
+      },
+      "Bens Bites": {
+        "chars": 37,
+        "status": "thin"
+      },
+      "Import AI": {
+        "chars": 57,
+        "status": "thin"
+      },
+      "The Batch": {
+        "chars": 297,
+        "status": "ok"
+      },
+      "The Neuron": {
+        "chars": 1593,
+        "status": "ok"
+      },
+      "Semafor Tech": {
+        "chars": 1054,
+        "status": "ok"
+      },
+      "Reddit ML": {
+        "chars": 51,
+        "status": "thin"
+      },
+      "Latent Space": {
+        "chars": 293,
+        "status": "ok"
+      }
+    }
+  }
+}
