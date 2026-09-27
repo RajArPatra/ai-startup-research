@@ -4,3 +4,5 @@ __pycache__/
 *.pdf
 raw_scrapes/
 .DS_Store
+
+.claude/

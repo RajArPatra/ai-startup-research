@@ -24,7 +24,7 @@ from playwright.sync_api import sync_playwright
 # ──────────────────────────────────────────────
 DATE_STR = datetime.now().strftime("%Y-%m-%d")
 
-# Primary: Gemini 2.0 Flash (1.5M tokens/day free — massive headroom)
+# Primary: Gemini 2.0 Flash (1.5M tokens/day free, massive headroom)
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_MODEL = "gemini-2.5-flash"
 
@@ -49,11 +49,11 @@ REPORT_TOPICS = {
         "questions": [
             "What's the competitive landscape beyond OpenAI/Anthropic/Google?",
             "How is open-source vs. closed-source playing out? What's the moat argument?",
-            "What's happening with cost curves — are inference costs dropping fast enough?",
+            "What's happening with cost curves, are inference costs dropping fast enough?",
         ],
     },
     "3_Application_Layer": {
-        "title": "Application Layer — AI-Native Startups",
+        "title": "Application Layer: AI-Native Startups",
         "questions": [
             "Which verticals have breakout AI-native companies? (Legal, healthcare, code, sales, finance, HR)",
             "What's the 'wrapper' vs. 'real product' distinction?",
@@ -65,7 +65,7 @@ REPORT_TOPICS = {
         "questions": [
             "Who's winning in AI infra? (Vector DBs, evaluation, observability, orchestration)",
             "What's the data pipeline stack for AI companies?",
-            "GPU/compute economics — who's building alternatives to NVIDIA dependency?",
+            "GPU/compute economics, who's building alternatives to NVIDIA dependency?",
         ],
     },
     "5_AI_Agents": {
@@ -88,7 +88,7 @@ REPORT_TOPICS = {
         "title": "Talent & Team Composition",
         "questions": [
             "What does a founding team look like for a successful AI startup?",
-            "Where is AI talent flowing — big labs, startups, or corporate AI teams?",
+            "Where is AI talent flowing, big labs, startups, or corporate AI teams?",
             "What roles are startups hiring for most aggressively?",
         ],
     },
@@ -146,10 +146,10 @@ def scrape_all_sources():
                     page.wait_for_timeout(3000)
                     content = extract_page_content(page, name)
                     all_text.append(content)
-                    print(f"    ✓ {url} — {len(content)} chars")
+                    print(f"    ✓ {url}, {len(content)} chars")
                     page.close()
                 except Exception as e:
-                    print(f"    ✗ {url} — {e}")
+                    print(f"    ✗ {url}, {e}")
 
             combined = "\n\n".join(all_text)
             results[name] = combined
@@ -203,7 +203,7 @@ def extract_page_content(page, source_name):
 
 
 # ──────────────────────────────────────────────
-# AI ANALYSIS — Gemini (primary) → Groq (fallback)
+# AI ANALYSIS: Gemini (primary) → Groq (fallback)
 # ──────────────────────────────────────────────
 def build_prompt(scraped_data, topic_info):
     """Build the analysis prompt from scraped data and topic info."""
@@ -233,10 +233,11 @@ SCRAPED DATA:
 
 INSTRUCTIONS:
 - Write a structured report with clear sections addressing each research question
-- Synthesize across sources — don't just list what each source said
+- Synthesize across sources, don't just list what each source said
+- Do not use em dashes or en dashes anywhere; use commas, colons or separate sentences
 - Identify trends, patterns, and notable signals
 - Call out specific companies, deals, and numbers when available
-- Note gaps — what important questions the data doesn't answer
+- Note gaps, what important questions the data doesn't answer
 - Be analytical and opinionated, not just descriptive
 - If the scraped data is thin on a topic, say so honestly and provide your best analysis based on what's available
 - Use markdown-style formatting: ## for sections, **bold** for emphasis, - for bullets
@@ -261,13 +262,13 @@ def analyze_with_gemini(prompt):
         resp = http_requests.post(url, json=payload, timeout=90)
         if resp.status_code == 200:
             data = resp.json()
-            # Gemini 2.5 Flash may return thinking + response parts — get the last text part
+            # Gemini 2.5 Flash may return thinking + response parts, get the last text part
             parts = data["candidates"][0]["content"]["parts"]
             text = parts[-1]["text"]
             return text, f"Gemini 2.5 Flash"
         elif resp.status_code == 429:
             wait = 15 * (attempt + 1)
-            print(f"    Gemini rate limited — waiting {wait}s (attempt {attempt+1}/3)...")
+            print(f"    Gemini rate limited, waiting {wait}s (attempt {attempt+1}/3)...")
             time.sleep(wait)
         else:
             raise Exception(f"Gemini API error {resp.status_code}: {resp.text[:200]}")
@@ -293,10 +294,10 @@ def analyze_with_groq(prompt):
                 err = str(e).lower()
                 if "rate_limit" in err or "429" in err:
                     if "tokens per day" in err:
-                        print(f"    Groq daily limit on {model} — trying next...")
+                        print(f"    Groq daily limit on {model}, trying next...")
                         break
                     wait = 30 * (attempt + 1)
-                    print(f"    Groq rate limited — waiting {wait}s...")
+                    print(f"    Groq rate limited, waiting {wait}s...")
                     time.sleep(wait)
                 else:
                     raise
@@ -308,14 +309,14 @@ def analyze_topic(scraped_data, topic_info):
     """Analyze one topic: try Gemini first, fallback to Groq."""
     prompt = build_prompt(scraped_data, topic_info)
 
-    # 1. Try Gemini (1.5M tokens/day — should always work)
+    # 1. Try Gemini (1.5M tokens/day, should always work)
     if GEMINI_API_KEY:
         try:
             text, model = analyze_with_gemini(prompt)
             print(f"    [{model}] ✓")
             return text, model
         except Exception as e:
-            print(f"    Gemini failed: {e} — falling back to Groq...")
+            print(f"    Gemini failed: {e}, falling back to Groq...")
 
     # 2. Fallback to Groq (Llama 3.3 70B → Llama 3.1 8B)
     if GROQ_API_KEY:
@@ -326,7 +327,7 @@ def analyze_topic(scraped_data, topic_info):
         except Exception as e:
             print(f"    Groq failed: {e}")
 
-    return "Analysis unavailable — all AI providers failed. Will retry next run.", "none"
+    return "Analysis unavailable, all AI providers failed. Will retry next run.", "none"
 
 
 def run_all_analyses(scraped_data):
@@ -338,7 +339,7 @@ def run_all_analyses(scraped_data):
         analysis, model = analyze_topic(scraped_data, topic_info)
         analyses[topic_id] = analysis
         models_used.add(model)
-        print(f"    Done — {len(analysis)} chars")
+        print(f"    Done, {len(analysis)} chars")
         time.sleep(3)
 
     print(f"  Models used: {', '.join(models_used)}")
@@ -414,7 +415,7 @@ def main():
     args = parser.parse_args()
 
     print("=" * 55)
-    print(f"  AI STARTUP RESEARCHER — {DATE_STR}")
+    print(f"  AI STARTUP RESEARCHER: {DATE_STR}")
     print("=" * 55)
 
     # Step 1: Scrape

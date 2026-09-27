@@ -69,7 +69,7 @@ RESEARCH_TOPICS = {
         "title": "AI Safety, Alignment & Governance",
         "questions": [
             "What new safety research, red-teaming results, or alignment papers were published?",
-            "How are labs and governments addressing AI risk — new policies, standards, or frameworks?",
+            "How are labs and governments addressing AI risk, new policies, standards, or frameworks?",
             "What's the latest on interpretability, RLHF improvements, and evaluation of dangerous capabilities?",
         ],
         "sources": ["arXiv", "Import AI", "The Batch", "TLDR AI", "Reddit ML"],
@@ -87,7 +87,7 @@ RESEARCH_TOPICS = {
         "title": "Benchmarks, Evaluations & Datasets",
         "questions": [
             "What new benchmarks or evaluation frameworks were proposed this week?",
-            "How are existing leaderboards shifting — which models are climbing/falling?",
+            "How are existing leaderboards shifting, which models are climbing/falling?",
             "What new datasets were released, and what gaps do they address?",
         ],
         "sources": ["arXiv", "HuggingFace Daily Papers", "Reddit ML"],
@@ -110,7 +110,7 @@ SOURCE_NAMES = [
 
 
 # ──────────────────────────────────────────────
-# SCRAPING — API-based sources
+# SCRAPING: API-based sources
 # ──────────────────────────────────────────────
 def scrape_arxiv():
     """Fetch latest AI papers from arXiv API."""
@@ -299,7 +299,7 @@ def scrape_reddit_ml():
 
 
 # ──────────────────────────────────────────────
-# SCRAPING — Playwright-based sources
+# SCRAPING: Playwright-based sources
 # ──────────────────────────────────────────────
 def scrape_playwright_sources():
     """Scrape TLDR AI and The Batch using Playwright. Returns dict."""
@@ -315,7 +315,7 @@ def scrape_playwright_sources():
             )
         )
 
-        # TLDR AI — last 2 days
+        # TLDR AI, last 2 days
         print("  Scraping: TLDR AI...")
         tldr_text = []
         for date in [DATE_STR, DATE_YESTERDAY]:
@@ -326,12 +326,12 @@ def scrape_playwright_sources():
                 text = page.inner_text("body")
                 if len(text) > 500:  # Not a 404/empty page
                     tldr_text.append(f"--- {date} ---\n{text[:5000]}")
-                    print(f"    ✓ tldr.tech/ai/{date} — {len(text)} chars")
+                    print(f"    ✓ tldr.tech/ai/{date}, {len(text)} chars")
                 else:
-                    print(f"    ✗ tldr.tech/ai/{date} — too short ({len(text)} chars)")
+                    print(f"    ✗ tldr.tech/ai/{date}, too short ({len(text)} chars)")
                 page.close()
             except Exception as e:
-                print(f"    ✗ tldr.tech/ai/{date} — {e}")
+                print(f"    ✗ tldr.tech/ai/{date}, {e}")
 
         results["TLDR AI"] = f"Source: TLDR AI Newsletter\nDate: {DATE_STR}\n\n" + "\n\n".join(tldr_text) if tldr_text else f"Source: TLDR AI\nDate: {DATE_STR}\n\nNo content available"
 
@@ -355,11 +355,11 @@ def scrape_playwright_sources():
                     lines.append(text)
             content = "\n".join(lines[:200])
             results["The Batch"] = f"Source: The Batch (deeplearning.ai)\nDate: {DATE_STR}\n\n{content}"
-            print(f"    ✓ deeplearning.ai/the-batch — {len(content)} chars")
+            print(f"    ✓ deeplearning.ai/the-batch, {len(content)} chars")
             page.close()
         except Exception as e:
             results["The Batch"] = f"Source: The Batch\nDate: {DATE_STR}\n\nFailed: {e}"
-            print(f"    ✗ The Batch — {e}")
+            print(f"    ✗ The Batch, {e}")
 
         browser.close()
 
@@ -402,7 +402,7 @@ def scrape_all_sources():
 
 
 # ──────────────────────────────────────────────
-# AI ANALYSIS — Gemini (primary) → Groq (fallback)
+# AI ANALYSIS: Gemini (primary) → Groq (fallback)
 # ──────────────────────────────────────────────
 def build_prompt(scraped_data, topic_info, is_groq_fallback=False):
     """Build the analysis prompt, filtering sources per topic."""
@@ -437,8 +437,9 @@ INSTRUCTIONS:
 - Write a structured report with clear sections addressing each research question
 - Cite specific papers by title and authors when available
 - Highlight breakthrough results, novel methods, and significant benchmarks
-- Synthesize across sources — identify patterns and emerging themes
-- Note gaps — what important questions the data doesn't answer
+- Synthesize across sources, identify patterns and emerging themes
+- Do not use em dashes or en dashes anywhere; use commas, colons or separate sentences
+- Note gaps, what important questions the data doesn't answer
 - Be analytical and opinionated, not just descriptive
 - If data is thin on a topic, say so honestly and provide your best analysis
 - Use markdown formatting: ## for sections, **bold** for emphasis, - for bullets
@@ -468,7 +469,7 @@ def analyze_with_gemini(prompt):
             return text, "Gemini 2.5 Flash"
         elif resp.status_code == 429:
             wait = 15 * (attempt + 1)
-            print(f"    Gemini rate limited — waiting {wait}s (attempt {attempt+1}/3)...")
+            print(f"    Gemini rate limited, waiting {wait}s (attempt {attempt+1}/3)...")
             time.sleep(wait)
         else:
             raise Exception(f"Gemini API error {resp.status_code}: {resp.text[:200]}")
@@ -494,10 +495,10 @@ def analyze_with_groq(prompt):
                 err = str(e).lower()
                 if "rate_limit" in err or "429" in err:
                     if "tokens per day" in err:
-                        print(f"    Groq daily limit on {model} — trying next...")
+                        print(f"    Groq daily limit on {model}, trying next...")
                         break
                     wait = 30 * (attempt + 1)
-                    print(f"    Groq rate limited — waiting {wait}s...")
+                    print(f"    Groq rate limited, waiting {wait}s...")
                     time.sleep(wait)
                 else:
                     raise
@@ -515,7 +516,7 @@ def analyze_topic(scraped_data, topic_info):
             print(f"    [{model}] ✓")
             return text, model
         except Exception as e:
-            print(f"    Gemini failed: {e} — falling back to Groq...")
+            print(f"    Gemini failed: {e}, falling back to Groq...")
 
     # 2. Fallback to Groq with truncated context
     if GROQ_API_KEY:
@@ -527,7 +528,7 @@ def analyze_topic(scraped_data, topic_info):
         except Exception as e:
             print(f"    Groq failed: {e}")
 
-    return "Analysis unavailable — all AI providers failed. Will retry next run.", "none"
+    return "Analysis unavailable, all AI providers failed. Will retry next run.", "none"
 
 
 def run_all_analyses(scraped_data):
@@ -539,7 +540,7 @@ def run_all_analyses(scraped_data):
         analysis, model = analyze_topic(scraped_data, topic_info)
         analyses[topic_id] = analysis
         models_used.add(model)
-        print(f"    Done — {len(analysis)} chars")
+        print(f"    Done, {len(analysis)} chars")
         time.sleep(3)
 
     print(f"  Models used: {', '.join(models_used)}")
@@ -613,7 +614,7 @@ def main():
     args = parser.parse_args()
 
     print("=" * 55)
-    print(f"  AI RESEARCH ANALYZER — {DATE_STR}")
+    print(f"  AI RESEARCH ANALYZER: {DATE_STR}")
     print("=" * 55)
 
     # Step 1: Scrape

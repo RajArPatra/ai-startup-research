@@ -3,26 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Equity Research — Micron Financial Supply Chain</title>
+<title>Equity Research: Micron Financial Supply Chain</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-<meta property="og:title" content="Equity Research — Micron Financial Supply Chain Network">
+<meta property="og:title" content="Equity Research: Micron Financial Supply Chain Network">
 <meta property="og:description" content="51-company interactive supply chain network. Click any node for a Sankey breakdown. Data from SEC EDGAR XBRL, yfinance.">
 <meta property="og:image" content="https://rajarpatra.github.io/ai-startup-research/apple-touch-icon.png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
 <style>
 :root {
-  --bg:#0a0c14; --surface:#13161f; --surface2:#1c2030;
-  --border:#252836; --border2:#2e3347;
-  --text:#e8eaf0; --muted:#8890a8; --muted2:#555c78;
-  --green:#34d399; --blue:#60a5fa; --red:#f87171;
-  --amber:#fbbf24; --purple:#a78bfa; --teal:#2dd4bf;
+  --bg:#E0DFDD; --surface:#D8D7D4; --surface2:#D0CFCB;
+  --border:#C2C1BD; --border2:#A5A5A5;
+  --text:#121010; --muted:#646362; --muted2:#8A8987;
+  --green:#4E7A5B; --blue:#4A6580; --red:#A65046;
+  --amber:#8A6A33; --purple:#6B5B7B; --teal:#3F756E;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,monospace;overflow:hidden;height:100vh;width:100vw;}
 
 /* HEADER */
-#header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,12,20,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+#header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(224,223,221,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
 #header-left{display:flex;align-items:center;gap:20px;min-width:0;}
 #header h1{font-size:14px;font-weight:700;letter-spacing:-0.3px;white-space:nowrap;}
 #header h1 span{color:var(--green);}
@@ -43,16 +46,16 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 #loading p{color:var(--muted);font-size:13px;}
 
 /* LEGEND */
-#legend{position:fixed;bottom:20px;left:20px;z-index:100;background:rgba(19,22,31,0.92);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:11px;display:none;}
+#legend{position:fixed;bottom:20px;left:20px;z-index:100;background:rgba(216,215,212,0.92);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:11px;display:none;}
 #legend .l-title{color:var(--muted);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
 .legend-item{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
 .l-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
 
 /* HINT */
-#hint{position:fixed;bottom:20px;right:20px;z-index:100;background:rgba(19,22,31,0.92);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--muted);text-align:center;display:none;}
+#hint{position:fixed;bottom:20px;right:20px;z-index:100;background:rgba(216,215,212,0.92);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--muted);text-align:center;display:none;}
 
 /* DISCLAIMER */
-#disclaimer{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(10,12,20,0.88);border-top:1px solid var(--border);padding:5px 20px;font-size:10px;color:var(--muted2);text-align:center;display:none;}
+#disclaimer{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(224,223,221,0.88);border-top:1px solid var(--border);padding:5px 20px;font-size:10px;color:var(--muted2);text-align:center;display:none;}
 
 /* MAIN SVG */
 #graph-svg{position:fixed;top:48px;left:0;right:0;bottom:0;width:100%;height:calc(100vh - 48px);}
@@ -88,13 +91,13 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .conn-item:hover{border-color:var(--border2);}
 .conn-name{font-size:12px;font-weight:600;}
 .conn-type{font-size:10px;color:var(--muted);}
-.private-banner{background:#1a102888;border:1px solid #4a206066;border-radius:10px;padding:20px;text-align:center;margin:20px 0;}
+.private-banner{background:#6B5B7B18;border:1px solid #6B5B7B44;border-radius:10px;padding:20px;text-align:center;margin:20px 0;}
 .private-banner .lock-icon{font-size:32px;margin-bottom:8px;}
-.private-banner h3{color:#c084fc;margin-bottom:6px;font-size:15px;}
+.private-banner h3{color:#6B5B7B;margin-bottom:6px;font-size:15px;}
 .private-banner p{color:var(--muted);font-size:12px;line-height:1.7;}
 
 /* TOOLTIP */
-#tooltip{position:fixed;pointer-events:none;background:rgba(19,22,31,0.97);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:11px;z-index:500;display:none;box-shadow:0 8px 30px rgba(0,0,0,0.6);max-width:280px;}
+#tooltip{position:fixed;pointer-events:none;background:rgba(216,215,212,0.97);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:11px;z-index:500;display:none;box-shadow:0 8px 30px rgba(0,0,0,0.12);max-width:280px;}
 #tooltip .tt-name{font-weight:700;font-size:13px;margin-bottom:3px;}
 #tooltip .tt-rev{color:var(--green);font-size:12px;}
 #tooltip .tt-role{color:var(--muted);font-size:10px;margin-top:2px;}
@@ -109,7 +112,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 <div id="header" style="display:none">
   <div id="header-left">
-    <h1>Micron <span>(MU)</span> — Supply Chain</h1>
+    <h1>Micron <span>(MU)</span>, Supply Chain</h1>
     <nav id="site-nav">
       <a href="index.html" class="nav-link">Startup Intelligence</a>
       <a href="research.html" class="nav-link">AI Research</a>
@@ -130,18 +133,18 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 <div id="legend">
   <div class="l-title">Legend</div>
-  <div class="legend-item"><div class="l-dot" style="background:#93c5fd"></div>L2 Suppliers</div>
-  <div class="legend-item"><div class="l-dot" style="background:#60a5fa"></div>L1 Suppliers</div>
-  <div class="legend-item"><div class="l-dot" style="background:#34d399;width:14px;height:14px;border:2px solid #6ee7b7"></div>Micron (MU)</div>
-  <div class="legend-item"><div class="l-dot" style="background:#f87171"></div>L1 Customers</div>
-  <div class="legend-item"><div class="l-dot" style="background:#fca5a5"></div>L2 Customers</div>
-  <div class="legend-item"><div class="l-dot" style="background:#a78bfa;border:1px dashed #a78bfa"></div>Private co.</div>
+  <div class="legend-item"><div class="l-dot" style="background:#7A94A8"></div>L2 Suppliers</div>
+  <div class="legend-item"><div class="l-dot" style="background:#4A6580"></div>L1 Suppliers</div>
+  <div class="legend-item"><div class="l-dot" style="background:#4E7A5B;width:14px;height:14px;border:2px solid #6E9B7A"></div>Micron (MU)</div>
+  <div class="legend-item"><div class="l-dot" style="background:#A65046"></div>L1 Customers</div>
+  <div class="legend-item"><div class="l-dot" style="background:#C77F76"></div>L2 Customers</div>
+  <div class="legend-item"><div class="l-dot" style="background:#6B5B7B;border:1px dashed #6B5B7B"></div>Private co.</div>
   <div style="margin-top:6px;font-size:10px;color:var(--muted2);">Node size = revenue</div>
 </div>
 
 <div id="hint">Scroll to zoom · Drag to pan · Click node</div>
 
-<div id="disclaimer">Data sourced from SEC EDGAR public filings and public market data. Independent financial research — not affiliated with or endorsed by any company shown. All figures in USD.</div>
+<div id="disclaimer">Data sourced from SEC EDGAR public filings and public market data. Independent financial research, not affiliated with or endorsed by any company shown. All figures in USD.</div>
 
 <div id="panel">
   <div id="panel-close">
@@ -162,12 +165,18 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 // HELPERS
 // ═══════════════════════════════════════════════════════════════
 const B=1e9, M=1e6;
-const fmtS = v => !v||v<=0 ? '—' : v>=1e12 ? '$'+(v/1e12).toFixed(1)+'T' : v>=B ? '$'+(v/B).toFixed(1)+'B' : v>=M ? '$'+(v/M).toFixed(0)+'M' : '$'+v.toLocaleString();
+const fmtS = v => !v||v<=0 ? 'n/a' : v>=1e12 ? '$'+(v/1e12).toFixed(1)+'T' : v>=B ? '$'+(v/B).toFixed(1)+'B' : v>=M ? '$'+(v/M).toFixed(0)+'M' : '$'+v.toLocaleString();
 
 const LAYER_COLOR = {
-  supplier_l2:"#93c5fd", supplier_l1:"#60a5fa",
-  center:"#34d399",
-  customer_l1:"#f87171", customer_l2:"#fca5a5",
+  supplier_l2:"#7A94A8", supplier_l1:"#4A6580",
+  center:"#4E7A5B",
+  customer_l1:"#A65046", customer_l2:"#C77F76",
+};
+// label colour per layer, chosen so each ticker clears 3:1 on its own node fill
+const LAYER_TEXT = {
+  supplier_l2:"#121010", supplier_l1:"#E0DFDD",
+  center:"#E0DFDD",
+  customer_l1:"#E0DFDD", customer_l2:"#121010",
 };
 const LAYER_LABEL = {
   supplier_l2:"L2 Supplier", supplier_l1:"L1 Supplier",
@@ -183,7 +192,7 @@ const ROLES = {
 };
 
 // ═══════════════════════════════════════════════════════════════
-// DATA TRANSFORM — pipeline JSON → viz format
+// DATA TRANSFORM, pipeline JSON → viz format
 // ═══════════════════════════════════════════════════════════════
 function buildVizData(raw) {
   const COMPANIES = {};
@@ -191,7 +200,7 @@ function buildVizData(raw) {
     const f = c.financials || {};
     const isPrivate = (c.data_source === "private");
     const hasData   = !isPrivate && (f.revenue > 0);
-    const color = isPrivate ? "#a78bfa" : (LAYER_COLOR[c.layer] || "#8890a8");
+    const color = isPrivate ? "#6B5B7B" : (LAYER_COLOR[c.layer] || "#646362");
     COMPANIES[c.id] = {
       id: c.id, name: c.name, ticker: c.ticker,
       role: c.layer, sector: c.category || "",
@@ -307,14 +316,14 @@ function buildGraph(COMPANIES, EDGES) {
     .data(Object.entries(ROLES))
     .join("text")
     .attr("x", d=>colX(d[1].col)).attr("y",26)
-    .attr("text-anchor","middle").attr("fill","#555c78")
+    .attr("text-anchor","middle").attr("fill","#646362")
     .attr("font-size","11px").attr("font-weight","600")
     .text(d=>d[1].label);
 
   // Edges
   const linkG = g.append("g");
   const linkSel = linkG.selectAll("line").data(links).join("line")
-    .attr("stroke", d=>d.type==="revenue"?"#f87171":d.type==="procurement"?"#a78bfa":"#60a5fa")
+    .attr("stroke", d=>d.type==="revenue"?"#A65046":d.type==="procurement"?"#6B5B7B":"#4A6580")
     .attr("stroke-opacity", d=>d.type==="procurement"?0.15:0.28)
     .attr("stroke-width",   d=>d.type==="revenue"?2:d.type==="procurement"?1:1.5)
     .on("mouseover",function(event,d){
@@ -338,12 +347,12 @@ function buildGraph(COMPANIES, EDGES) {
   // Glow for Micron
   nodeSel.filter(d=>d.role==="center").append("circle")
     .attr("r",d=>nodeR(d)+10).attr("fill","none")
-    .attr("stroke","#34d399").attr("stroke-opacity",0.2).attr("stroke-width",5);
+    .attr("stroke","#4E7A5B").attr("stroke-opacity",0.2).attr("stroke-width",5);
 
   // Dashed ring for private
   nodeSel.filter(d=>d.is_private).append("circle")
     .attr("r",d=>nodeR(d)+4).attr("fill","none")
-    .attr("stroke","#a78bfa").attr("stroke-opacity",0.45)
+    .attr("stroke","#6B5B7B").attr("stroke-opacity",0.45)
     .attr("stroke-width",1.5).attr("stroke-dasharray","3,3");
 
   // Main circle
@@ -363,20 +372,20 @@ function buildGraph(COMPANIES, EDGES) {
   // Ticker
   nodeSel.append("text")
     .attr("text-anchor","middle").attr("dy","0.35em")
-    .attr("fill",d=>d.is_private?"#a78bfa":"#0a0c14")
+    .attr("fill",d=>d.is_private?"#EFEAF2":(LAYER_TEXT[d.layer]||"#E0DFDD"))
     .attr("font-size",d=>d.role==="center"?13:10).attr("font-weight","800")
     .text(d=>d.ticker||d.id.substring(0,5));
 
   // Name label
   nodeSel.append("text")
     .attr("text-anchor","middle").attr("dy",d=>nodeR(d)+13)
-    .attr("fill","#8890a8").attr("font-size","9px")
+    .attr("fill","#646362").attr("font-size","9px")
     .text(d=>d.name.length>16?d.name.substring(0,15)+"…":d.name);
 
   // Revenue label
   nodeSel.append("text")
     .attr("text-anchor","middle").attr("dy",d=>nodeR(d)+23)
-    .attr("fill","#555c78").attr("font-size","8px")
+    .attr("fill","#646362").attr("font-size","8px")
     .text(d=>d.has_data?fmtS(d.fin.revenue):d.is_private?"private":"no data");
 
   function tick(){
@@ -431,15 +440,15 @@ function openPanel(id){
 }
 
 function confBadge(co){
-  if(co.is_private)           return `<span class="conf-badge" style="background:#4a206055;color:#c084fc;border:1px solid #4a2060">🔒 Private</span>`;
-  if(co.confidence==="high")  return `<span class="conf-badge" style="background:#05302055;color:#34d399;border:1px solid #053020">✓ SEC XBRL</span>`;
-  if(co.confidence==="medium")return `<span class="conf-badge" style="background:#2d240055;color:#fbbf24;border:1px solid #2d2400">~ yfinance</span>`;
-  return `<span class="conf-badge" style="background:#3a100055;color:#f87171;border:1px solid #3a1000">⚠ No data</span>`;
+  if(co.is_private)           return `<span class="conf-badge" style="background:#6B5B7B22;color:#584A66;border:1px solid #6B5B7B66">🔒 Private</span>`;
+  if(co.confidence==="high")  return `<span class="conf-badge" style="background:#4E7A5B22;color:#3D6349;border:1px solid #4E7A5B66">✓ SEC XBRL</span>`;
+  if(co.confidence==="medium")return `<span class="conf-badge" style="background:#8A6A3322;color:#6E5427;border:1px solid #8A6A3366">~ yfinance</span>`;
+  return `<span class="conf-badge" style="background:#A6504622;color:#8A423A;border:1px solid #A6504666">⚠ No data</span>`;
 }
 
 function renderPanel(co, COMPANIES, EDGES){
   const f=co.fin;
-  const rc=LAYER_COLOR[co.role]||"#666";
+  const rc=LAYER_COLOR[co.role]||"#A5A5A5";
   const rl=LAYER_LABEL[co.role]||co.role;
   const outE=EDGES.filter(e=>e.s===co.id);
   const inE =EDGES.filter(e=>e.t===co.id);
@@ -460,8 +469,8 @@ function renderPanel(co, COMPANIES, EDGES){
           ?"This company does not trade on a public exchange. No revenue, income, or balance sheet data is available from public channels (SEC EDGAR, yfinance, exchange filings)."
           :"Financial data could not be retrieved from SEC EDGAR XBRL or yfinance. This may be due to a non-standard reporting structure, delisting, or gaps in public data sources."
         }</p>
-        ${co.note?`<p style="margin-top:8px;color:#c084fc;font-size:11px;">${co.note}</p>`:""}
-        ${co.error?`<p style="margin-top:6px;color:#f87171;font-size:10px;">Details: ${co.error}</p>`:""}
+        ${co.note?`<p style="margin-top:8px;color:#6B5B7B;font-size:11px;">${co.note}</p>`:""}
+        ${co.error?`<p style="margin-top:6px;color:#A65046;font-size:10px;">Details: ${co.error}</p>`:""}
       </div>
       ${connHTML("⬇ Inflows",inE,"s",COMPANIES)}
       ${connHTML("⬆ Outflows",outE,"t",COMPANIES)}`;
@@ -469,7 +478,7 @@ function renderPanel(co, COMPANIES, EDGES){
   }
 
   const gp = f.gross_profit || Math.max(0,f.revenue-f.cogs) || 0;
-  const margin = gp&&f.revenue ? (gp/f.revenue*100).toFixed(1)+"%" : "—";
+  const margin = gp&&f.revenue ? (gp/f.revenue*100).toFixed(1)+"%" : "n/a";
 
   panelContent.innerHTML=`
     <div class="company-header">
@@ -497,7 +506,7 @@ function renderPanel(co, COMPANIES, EDGES){
       Source: <b style="color:var(--text)">${co.data_source.toUpperCase().replace(/_/g," ")}</b> ·
       Confidence: <b style="color:var(--text)">${co.confidence}</b>
       ${co.note?`<br>${co.note}`:""}
-      ${co.error?`<br><span style="color:#f87171">⚠ ${co.error}</span>`:""}
+      ${co.error?`<br><span style="color:#A65046">⚠ ${co.error}</span>`:""}
     </div>`;
 
   setTimeout(()=>drawSankey(co),50);
@@ -531,16 +540,16 @@ function drawSankey(co){
   const add=(id,lbl,col)=>nds.push({id,lbl,col});
   const link=(s,t,v)=>{ if(v>100) lks.push({s,t,v}); };
 
-  add("rev","Revenue","#34d399");
-  if(cogs>0)         add("cogs","COGS","#f87171");
-  if(gp>0)           add("gp","Gross Profit","#34d399");
-  if(f.rnd>0)        add("rnd","R&D","#f87171");
-  if(f.sga>0)        add("sga","SG&A","#f87171");
-  if(otherOp>0)      add("other","Other Op.","#f87171");
-  if(f.op_income>0)  add("oi","Op. Income","#34d399");
-  if(f.net_income>0) add("ni","Net Income","#34d399");
+  add("rev","Revenue","#4E7A5B");
+  if(cogs>0)         add("cogs","COGS","#A65046");
+  if(gp>0)           add("gp","Gross Profit","#4E7A5B");
+  if(f.rnd>0)        add("rnd","R&D","#A65046");
+  if(f.sga>0)        add("sga","SG&A","#A65046");
+  if(otherOp>0)      add("other","Other Op.","#A65046");
+  if(f.op_income>0)  add("oi","Op. Income","#4E7A5B");
+  if(f.net_income>0) add("ni","Net Income","#4E7A5B");
   const taxEtc=Math.max(0,f.op_income-f.net_income);
-  if(taxEtc>0)       add("tax","Tax & Other","#fbbf24");
+  if(taxEtc>0)       add("tax","Tax & Other","#8A6A33");
 
   link("rev","cogs",cogs); link("rev","gp",gp);
   link("gp","rnd",f.rnd||0); link("gp","sga",f.sga||0); link("gp","other",otherOp);
@@ -571,18 +580,18 @@ function drawSankey(co){
     const {nodes:sn,links:sl}=sk(graph);
     svg2.append("g").selectAll("path").data(sl).join("path")
       .attr("d",d3.sankeyLinkHorizontal()).attr("fill","none")
-      .attr("stroke",d=>cmap[d.target.id]||"#666")
+      .attr("stroke",d=>cmap[d.target.id]||"#A5A5A5")
       .attr("stroke-opacity",0.25).attr("stroke-width",d=>Math.max(1,d.width));
     svg2.append("g").selectAll("rect").data(sn).join("rect")
       .attr("x",d=>d.x0).attr("y",d=>d.y0)
       .attr("width",d=>d.x1-d.x0).attr("height",d=>Math.max(2,d.y1-d.y0))
-      .attr("fill",d=>cmap[d.id]||"#666").attr("rx",2);
+      .attr("fill",d=>cmap[d.id]||"#A5A5A5").attr("rx",2);
     svg2.append("g").selectAll("text.l").data(sn).join("text")
       .attr("x",d=>d.x1+5).attr("y",d=>(d.y0+d.y1)/2).attr("dy","0em")
-      .attr("fill","#e8eaf0").attr("font-size","9px").text(d=>lmap[d.id]||d.id);
+      .attr("fill","#121010").attr("font-size","9px").text(d=>lmap[d.id]||d.id);
     svg2.append("g").selectAll("text.v").data(sn).join("text")
       .attr("x",d=>d.x1+5).attr("y",d=>(d.y0+d.y1)/2).attr("dy","1.1em")
-      .attr("fill","#555c78").attr("font-size","8px").text(d=>fmtS(d.value));
+      .attr("fill","#646362").attr("font-size","8px").text(d=>fmtS(d.value));
   }catch(e){ console.warn("Sankey error",e); }
 }
 
