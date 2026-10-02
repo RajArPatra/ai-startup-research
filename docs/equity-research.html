@@ -15,9 +15,9 @@
 <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
 <style>
 :root {
-  --bg:#E0DFDD; --surface:#D8D7D4; --surface2:#D0CFCB;
-  --border:#C2C1BD; --border2:#A5A5A5;
-  --text:#121010; --muted:#646362; --muted2:#8A8987;
+  --bg:#F4EFE4; --surface:#EBE4D6; --surface2:#E2DACA;
+  --border:#CFC4B0; --border2:#B9AE9A;
+  --text:#1B1611; --muted:#6E6355; --muted2:#978A72;
   --green:#4E7A5B; --blue:#4A6580; --red:#A65046;
   --amber:#8A6A33; --purple:#6B5B7B; --teal:#3F756E;
 }
@@ -25,7 +25,7 @@
 body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,monospace;overflow:hidden;height:100vh;width:100vw;}
 
 /* HEADER */
-#header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(224,223,221,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+#header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(244,239,228,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
 #header-left{display:flex;align-items:center;gap:20px;min-width:0;}
 #header h1{font-size:14px;font-weight:700;letter-spacing:-0.3px;white-space:nowrap;}
 #header h1 span{color:var(--green);}
@@ -46,16 +46,16 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 #loading p{color:var(--muted);font-size:13px;}
 
 /* LEGEND */
-#legend{position:fixed;bottom:20px;left:20px;z-index:100;background:rgba(216,215,212,0.92);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:11px;display:none;}
+#legend{position:fixed;bottom:20px;left:20px;z-index:100;background:rgba(235,228,214,0.92);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:11px;display:none;}
 #legend .l-title{color:var(--muted);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
 .legend-item{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
 .l-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
 
 /* HINT */
-#hint{position:fixed;bottom:20px;right:20px;z-index:100;background:rgba(216,215,212,0.92);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--muted);text-align:center;display:none;}
+#hint{position:fixed;bottom:20px;right:20px;z-index:100;background:rgba(235,228,214,0.92);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--muted);text-align:center;display:none;}
 
 /* DISCLAIMER */
-#disclaimer{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(224,223,221,0.88);border-top:1px solid var(--border);padding:5px 20px;font-size:10px;color:var(--muted2);text-align:center;display:none;}
+#disclaimer{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(244,239,228,0.88);border-top:1px solid var(--border);padding:5px 20px;font-size:10px;color:var(--muted2);text-align:center;display:none;}
 
 /* MAIN SVG */
 #graph-svg{position:fixed;top:48px;left:0;right:0;bottom:0;width:100%;height:calc(100vh - 48px);}
@@ -97,7 +97,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .private-banner p{color:var(--muted);font-size:12px;line-height:1.7;}
 
 /* TOOLTIP */
-#tooltip{position:fixed;pointer-events:none;background:rgba(216,215,212,0.97);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:11px;z-index:500;display:none;box-shadow:0 8px 30px rgba(0,0,0,0.12);max-width:280px;}
+#tooltip{position:fixed;pointer-events:none;background:rgba(235,228,214,0.97);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:11px;z-index:500;display:none;box-shadow:0 8px 30px rgba(0,0,0,0.12);max-width:280px;}
 #tooltip .tt-name{font-weight:700;font-size:13px;margin-bottom:3px;}
 #tooltip .tt-rev{color:var(--green);font-size:12px;}
 #tooltip .tt-role{color:var(--muted);font-size:10px;margin-top:2px;}
@@ -174,9 +174,9 @@ const LAYER_COLOR = {
 };
 // label colour per layer, chosen so each ticker clears 3:1 on its own node fill
 const LAYER_TEXT = {
-  supplier_l2:"#121010", supplier_l1:"#E0DFDD",
-  center:"#E0DFDD",
-  customer_l1:"#E0DFDD", customer_l2:"#121010",
+  supplier_l2:"#1B1611", supplier_l1:"#F4EFE4",
+  center:"#F4EFE4",
+  customer_l1:"#F4EFE4", customer_l2:"#1B1611",
 };
 const LAYER_LABEL = {
   supplier_l2:"L2 Supplier", supplier_l1:"L1 Supplier",
@@ -200,7 +200,7 @@ function buildVizData(raw) {
     const f = c.financials || {};
     const isPrivate = (c.data_source === "private");
     const hasData   = !isPrivate && (f.revenue > 0);
-    const color = isPrivate ? "#6B5B7B" : (LAYER_COLOR[c.layer] || "#646362");
+    const color = isPrivate ? "#6B5B7B" : (LAYER_COLOR[c.layer] || "#6E6355");
     COMPANIES[c.id] = {
       id: c.id, name: c.name, ticker: c.ticker,
       role: c.layer, sector: c.category || "",
@@ -316,7 +316,7 @@ function buildGraph(COMPANIES, EDGES) {
     .data(Object.entries(ROLES))
     .join("text")
     .attr("x", d=>colX(d[1].col)).attr("y",26)
-    .attr("text-anchor","middle").attr("fill","#646362")
+    .attr("text-anchor","middle").attr("fill","#6E6355")
     .attr("font-size","11px").attr("font-weight","600")
     .text(d=>d[1].label);
 
@@ -372,20 +372,20 @@ function buildGraph(COMPANIES, EDGES) {
   // Ticker
   nodeSel.append("text")
     .attr("text-anchor","middle").attr("dy","0.35em")
-    .attr("fill",d=>d.is_private?"#EFEAF2":(LAYER_TEXT[d.layer]||"#E0DFDD"))
+    .attr("fill",d=>d.is_private?"#EFEAF2":(LAYER_TEXT[d.layer]||"#F4EFE4"))
     .attr("font-size",d=>d.role==="center"?13:10).attr("font-weight","800")
     .text(d=>d.ticker||d.id.substring(0,5));
 
   // Name label
   nodeSel.append("text")
     .attr("text-anchor","middle").attr("dy",d=>nodeR(d)+13)
-    .attr("fill","#646362").attr("font-size","9px")
+    .attr("fill","#6E6355").attr("font-size","9px")
     .text(d=>d.name.length>16?d.name.substring(0,15)+"…":d.name);
 
   // Revenue label
   nodeSel.append("text")
     .attr("text-anchor","middle").attr("dy",d=>nodeR(d)+23)
-    .attr("fill","#646362").attr("font-size","8px")
+    .attr("fill","#6E6355").attr("font-size","8px")
     .text(d=>d.has_data?fmtS(d.fin.revenue):d.is_private?"private":"no data");
 
   function tick(){
@@ -588,10 +588,10 @@ function drawSankey(co){
       .attr("fill",d=>cmap[d.id]||"#A5A5A5").attr("rx",2);
     svg2.append("g").selectAll("text.l").data(sn).join("text")
       .attr("x",d=>d.x1+5).attr("y",d=>(d.y0+d.y1)/2).attr("dy","0em")
-      .attr("fill","#121010").attr("font-size","9px").text(d=>lmap[d.id]||d.id);
+      .attr("fill","#1B1611").attr("font-size","9px").text(d=>lmap[d.id]||d.id);
     svg2.append("g").selectAll("text.v").data(sn).join("text")
       .attr("x",d=>d.x1+5).attr("y",d=>(d.y0+d.y1)/2).attr("dy","1.1em")
-      .attr("fill","#646362").attr("font-size","8px").text(d=>fmtS(d.value));
+      .attr("fill","#6E6355").attr("font-size","8px").text(d=>fmtS(d.value));
   }catch(e){ console.warn("Sankey error",e); }
 }
 

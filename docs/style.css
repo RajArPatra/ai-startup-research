@@ -3,14 +3,14 @@
 
 :root {
     /* warm-grey monochrome, matched to rajarpatra.github.io */
-    --bg: #E0DFDD;
-    --surface: #D8D7D4;
-    --surface2: #D0CFCB;
-    --border: #C2C1BD;
-    --text: #121010;
-    --text2: #646362;
-    --accent: #121010;
-    --accent2: #2E2C2A;
+    --bg: #F4EFE4;
+    --surface: #EBE4D6;
+    --surface2: #E2DACA;
+    --border: #CFC4B0;
+    --text: #1B1611;
+    --text2: #6E6355;
+    --accent: #1B1611;
+    --accent2: #332A20;
     /* status colours kept meaningful but desaturated to fit */
     --green: #4E7A5B;
     --yellow: #8A6A33;
@@ -286,9 +286,9 @@ footer p {
 
 /* ── Print ── */
 @media print {
-    body { background: #fff; color: #121010; }
+    body { background: #fff; color: #1B1611; }
     .container { max-width: 100%; }
     .tabs, .week-selector, footer { display: none; }
     .report { border: none; padding: 0; }
-    .analysis strong { color: #121010; }
+    .analysis strong { color: #1B1611; }
 }
