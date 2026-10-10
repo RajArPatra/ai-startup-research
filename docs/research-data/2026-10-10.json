@@ -1,0 +1,117 @@
+{
+  "date": "2026-10-10",
+  "generated_at": "2026-10-10T10:01:36.722546+00:00",
+  "sources": [
+    "arXiv",
+    "HuggingFace Daily Papers",
+    "Import AI",
+    "TLDR AI",
+    "The Batch",
+    "PubMed",
+    "BioRxiv",
+    "Reddit ML"
+  ],
+  "reports": {
+    "1_Trending_Papers": {
+      "title": "Trending Papers & Preprints",
+      "questions": [
+        "What are the most discussed/upvoted AI papers this week across arXiv, HuggingFace, and Reddit?",
+        "Which papers are getting traction in industry vs. academia? What's driving the attention?",
+        "Are there any surprising papers from non-obvious institutions or authors?"
+      ],
+      "analysis": "Analysis unavailable, all AI providers failed. Will retry next run."
+    },
+    "2_Breakthrough_Models": {
+      "title": "Breakthrough Models & Architectures",
+      "questions": [
+        "What new model architectures, training techniques, or scaling approaches were published this week?",
+        "How do new models compare on key benchmarks (MMLU, HumanEval, MT-Bench, etc.)?",
+        "What's the state of multimodal models, reasoning models, and long-context architectures?"
+      ],
+      "analysis": "Analysis unavailable, all AI providers failed. Will retry next run."
+    },
+    "3_OpenSource_Ecosystem": {
+      "title": "Open-Source AI Developments",
+      "questions": [
+        "What significant open-source model releases, tools, or datasets launched this week?",
+        "How are open-weight models (Llama, Mistral, Qwen, Gemma) progressing vs. closed models?",
+        "Which open-source libraries, frameworks, or tools are gaining adoption?"
+      ],
+      "analysis": "Analysis unavailable, all AI providers failed. Will retry next run."
+    },
+    "4_AI_Safety_Alignment": {
+      "title": "AI Safety, Alignment & Governance",
+      "questions": [
+        "What new safety research, red-teaming results, or alignment papers were published?",
+        "How are labs and governments addressing AI risk, new policies, standards, or frameworks?",
+        "What's the latest on interpretability, RLHF improvements, and evaluation of dangerous capabilities?"
+      ],
+      "analysis": "Analysis unavailable, all AI providers failed. Will retry next run."
+    },
+    "5_Applied_AI_Healthcare": {
+      "title": "AI in Healthcare, Biology & Science",
+      "questions": [
+        "What are the most promising AI applications in drug discovery, diagnostics, or clinical trials?",
+        "Which biomedical AI papers show real clinical impact or novel biological insights?",
+        "How is AI being used in protein folding, genomics, medical imaging, or scientific simulation?"
+      ],
+      "analysis": "Analysis unavailable, all AI providers failed. Will retry next run."
+    },
+    "6_Benchmarks_Evaluation": {
+      "title": "Benchmarks, Evaluations & Datasets",
+      "questions": [
+        "What new benchmarks or evaluation frameworks were proposed this week?",
+        "How are existing leaderboards shifting, which models are climbing/falling?",
+        "What new datasets were released, and what gaps do they address?"
+      ],
+      "analysis": "Analysis unavailable, all AI providers failed. Will retry next run."
+    },
+    "7_Industry_Applications": {
+      "title": "Industry & Applied AI Trends",
+      "questions": [
+        "What AI product launches, enterprise deployments, or real-world applications made news?",
+        "How are companies integrating AI agents, copilots, or automation into workflows?",
+        "What emerging AI use cases are gaining traction beyond chatbots and code generation?"
+      ],
+      "analysis": "Analysis unavailable, all AI providers failed. Will retry next run."
+    }
+  },
+  "scrape_stats": {
+    "total_chars": 82351,
+    "source_count": 8,
+    "sources": {
+      "arXiv": {
+        "chars": 35127,
+        "status": "ok"
+      },
+      "HuggingFace Daily Papers": {
+        "chars": 20896,
+        "status": "ok"
+      },
+      "Import AI": {
+        "chars": 52,
+        "status": "thin"
+      },
+      "PubMed": {
+        "chars": 17851,
+        "status": "ok"
+      },
+      "BioRxiv": {
+        "chars": 2994,
+        "status": "ok"
+      },
+      "Reddit ML": {
+        "chars": 52,
+        "status": "thin"
+      },
+      "TLDR AI": {
+        "chars": 5064,
+        "status": "ok"
+      },
+      "The Batch": {
+        "chars": 315,
+        "status": "ok"
+      }
+    }
+  }
+}
