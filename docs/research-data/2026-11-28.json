@@ -1,0 +1,117 @@
+{
+  "date": "2026-11-28",
+  "generated_at": "2026-11-28T12:04:49.492811+00:00",
+  "sources": [
+    "arXiv",
+    "HuggingFace Daily Papers",
+    "Import AI",
+    "TLDR AI",
+    "The Batch",
+    "PubMed",
+    "BioRxiv",
+    "Reddit ML"
+  ],
+  "reports": {
+    "1_Trending_Papers": {
+      "title": "Trending Papers & Preprints",
+      "questions": [
+        "What are the most discussed/upvoted AI papers this week across arXiv, HuggingFace, and Reddit?",
+        "Which papers are getting traction in industry vs. academia? What's driving the attention?",
+        "Are there any surprising papers from non-obvious institutions or authors?"
+      ],
+      "analysis": "Analysis unavailable, all AI providers failed. Will retry next run."
+    },
+    "2_Breakthrough_Models": {
+      "title": "Breakthrough Models & Architectures",
+      "questions": [
+        "What new model architectures, training techniques, or scaling approaches were published this week?",
+        "How do new models compare on key benchmarks (MMLU, HumanEval, MT-Bench, etc.)?",
+        "What's the state of multimodal models, reasoning models, and long-context architectures?"
+      ],
+      "analysis": "## AI Research Intelligence Briefing: Breakthrough Models & Architectures\n\n**Date:** 2026-11-28\n\nThis week's research landscape reveals a strong emphasis on refining existing architectures, enhancing agentic capabilities, and developing more robust evaluation paradigms. While no single \"GPT-5 moment\" dominates the headlines, a consistent theme of addressing practical challenges in deployment, trustworthiness, and efficiency emerges across diverse domains. The focus is shifting from raw capability to reliable, context-aware, and ethically sound AI systems.\n\n## New Model Architectures, Training Techniques, and Scaling Approaches\n\nSeveral novel contributions this week push the boundaries of model design and optimization:\n\n*   **Architectural Innovations:**\n    *   The **Mixture-of-Loops Transformer (MoLT)** by Zhu et al. [2611.34923v1] introduces a Mixture-of-Loops Attention (MoLA) mechanism, reusing keys and values as memory across depths and loops. This aims to boost expressivity in looped Transformers without proportional efficiency costs, a critical direction for scaling. Relatedly, **LoopTitan** by Tian et al. [2611.34821v1] offers a crucial analysis, suggesting that reported gains in looped Mixture-of-Experts (MoE) often confound parameter revisit with other design choices, urging caution in attributing benefits solely to looping.\n    *   For long-sequence modeling, **Stable Gated DeltaNet-2** by Zhang et al. (HuggingFace, 133 upvotes) addresses training failures in Gated DeltaNet-2 by mitigating instability from non-normal erase operators, improving a promising linear attention architecture.\n    *   In reinforcement learning, **Split-RL** by Fuhrer et al. [2611.34799v1] proposes a Gradient Boosting Trees algorithm for local conflict resolution, allowing policies to handle contradictory feedback more effectively than standard neural networks. A theoretical advance for RL is also seen in **Gradient TD($λ$) for Non-Linear Function Approximation** by Lahane [2611.34826v1], extending a convergent off-policy algorithm.\n\n*   **Advanced Training Techniques:**\n    *   For mathematical reasoning, **Diverse Alternative Reasoning Traces (DART)** by Aichberger et al. [2611.34928v1] offers a trace-mining method for post-training LLMs. It starts from rejected traces, decomposes them, and generates distinct alternatives, addressing the rarity of successful traces for hard problems.\n    *   **Decision-Focused Fine-Tuning** by Golgoon et al. [2611.34858v1] moves beyond probability prediction for tabular transformers, directly optimizing for cost-sensitive financial decisions, a practical and impactful shift.\n    *   Addressing a critical deployment challenge, **Repairing the Trustworthiness of Distilled Language Models** by Shubham et al. [2611.34831v1] introduces a targeted repair framework using proximal Bregman response functions. This allows for fixing trustworthiness regressions in smaller student models without altering core capabilities inherited from the teacher.\n    *   A fundamental insight into diffusion models comes from **Guidance as Variance Matching** by Backour et al. [2611.34801v1], which finds that guidance improves sample quality by restoring data variance rather than improving posterior mean prediction.\n\n*   **Scaling and Efficiency:**\n    *   **DFly2: Turbocharging Long-Context Speculative Decoding by Sharing the Target's Sparsity** by Liu et al. [2611.34776v1] presents a significant optimization for long-context models. It improves speculative decoding for natively sparse architectures by eliminating redundant context caches, directly addressing memory and prefill time bottlenecks.\n    *   **PersonaFactory** by Doan et al. [2611.34785v1] offers an end-to-end pipeline for generating stylistically diverse user prompts using synthetic personas, a scalable approach to augment training data for LLMs and improve alignment.\n\n## Benchmark Performance and Evaluation Paradigms\n\nThis week saw a proliferation of new benchmarks, reflecting a growing need for specialized evaluations beyond general-purpose leaderboards.\n\n*   **New Benchmarks for Agentic AI:**\n    *   **DRBench Pro** by Huang et al. [2611.34852v1] (also HuggingFace, 25 upvotes) is a knowledge-centric benchmark for deep research agents, focusing on structured knowledge coverage. This is a crucial step towards evaluating the depth and breadth of agentic research.\n    *   **OS-Omni** by Shen et al. (HuggingFace, 110 upvotes) introduces a live, cross-platform benchmark for generalist computer-using agents, evaluating long-horizon workflows across Windows, Ubuntu, and Android. This directly addresses the challenge of building truly generalist agents.\n    *   **μ-Bench** by Lin et al. [2611.34920v1] targets multi-user task completion in shared interaction voice agents, assessing interdependent requests and per-user constraints.\n\n*   **Specialized Evaluation for Models:**\n    *   **BOP-Refer** by Hodan et al. [2611.34862v1] is the first benchmark for monocular 3D and 2D object grounding, evaluating 17 frontier Vision-Language Models (VLMs) on everyday and industrial objects.\n    *   **VulnSafe** by Luo et al. [2611.34819v1] introduces a Chinese capability assessment for LLMs, focusing on Vulnerability-Aware Response Competence for emotionally supportive interactions, moving beyond isolated safety violations.\n    *   **The Linguistic Knowledge Benchmark** by Lelièvre et al. [2611.34823v1] aims to test LLMs' foundational linguistic knowledge for early-grade literacy in low-resource languages, highlighting a critical gap in current model capabilities.\n\n*   **Key Performance Insights and Challenges:**\n    *   A significant finding from Yu et al. [2611.34935v1] is that using generated helper images for visual reasoning *lowers* mean accuracy by 3.7 percentage points across 13 VLM and generator pairs, including models like BAGEL and Janus-Pro-7B. This challenges the intuitive assumption that more visual context is always better.\n    *   Luo et al. [2611.34813v1] (also HuggingFace, 61 upvotes) make a provocative claim: **coding agents are stronger visual reasoners than video generation models**. This suggests that symbolic reasoning, even when mediated by code, can outperform \"native\" visual reasoning in some contexts.\n    *   Du et al. (HuggingFace, 5 upvotes) reveal a critical issue in multilingual decision models: *every model loses accuracy* in non-English languages (2-8 points), while confidence does not fall proportionally. This \"Lost in Translation, Not in Confidence\" finding highlights a significant trustworthiness and calibration problem for global deployment.\n    *   The paper \"Speak When You See It\" by Chen (HuggingFace, 5 upvotes) exposes a flaw in existing proactive assistant benchmarks, where a video-blind timer baseline outperforms published results on Ego-MC-Bench, indicating that benchmarks may reward timing over actual visual evidence.\n\n**Gap Analysis:** While new benchmarks are abundant, direct comparative results of *newly proposed models/techniques* on established, widely recognized benchmarks like MMLU or HumanEval are notably sparse this week. The focus appears to be on defining new frontiers of evaluation rather than reporting incremental gains on existing ones.\n\n## State of Multimodal, Reasoning, and Long-Context Models\n\nThese three areas continue to be central to AI research, with notable progress and identified challenges.\n\n*   **Multimodal Models:**\n    *   The debate between \"native visual reasoning\" and \"vision with code\" is a key theme, as highlighted by Luo et al. [2611.34813v1]. This suggests that the optimal path for multimodal reasoning may not always be purely end-to-end visual processing.\n    *   Kim et al. (HuggingFace, 27 upvotes) address the challenge of integrating visual understanding and generation within unified multimodal models, specifically tackling heterogeneous visual representations. This is crucial for truly generalist multimodal systems.\n    *   In robotics, **Entangle** by Xiang et al. (HuggingFace, 34 upvotes) focuses on scaling human-video in-context world-action models, bridging human demonstrations to robotic manipulation.\n\n*   **Reasoning Models:**\n    *   Beyond mathematical reasoning (DART), several papers address the reliability of reasoning. Baur et al. [2611.34830v1] investigate how training objectives and architectures shape epistemic uncertainty in world models, a prerequisite for robust reasoning.\n    *   **TASK Memory** by Zhao et al. [2611.34762v1] tackles memory hallucination in LLM agents, identifying conflicts between parametric knowledge and external memory as a root cause. This is a critical step towards more reliable agentic reasoning.\n    *   Huang et al. [2611.34848v1] emphasize that \"Timestamps Matter in Time Series Reasoning,\" warning that LLMs may take shortcuts if not explicitly forced to use temporal information, highlighting a potential fragility in current reasoning approaches.\n\n*   **Long-Context Architectures:**\n    *   The efficiency gains from **DFly2** by Liu et al. [2611.34776v1] are a practical breakthrough for deploying sparse long-context models.\n    *   A significant operational challenge for long-context models is explored by Devoto et al. (HuggingFace, 12 upvotes) in \"Letting Models Manage Their Own Context.\" They compare agent harness-driven versus model-driven context management for budgets up to 500K tokens, finding that allowing models to manage their own context can be more effective for complex tasks like document research. This indicates a shift towards more autonomous and adaptive context handling.\n\n## Analysis and Outlook\n\nThis week's research underscores a maturing AI landscape. The focus is less on raw, unconstrained scaling and more on **responsible, efficient, and reliable deployment**. The proliferation of specialized benchmarks for agents, multilingual models, and specific reasoning tasks indicates a growing awareness that general benchmarks are insufficient for real-world applications.\n\nThe tension between \"native\" (e.g., visual generation for reasoning) and \"symbolic\" (e.g., coding agents for vision) approaches to complex tasks is a fascinating and active area. The strong performance of coding agents in visual reasoning, and the negative result for image generation in visual reasoning, suggest that the most effective AI systems may be hybrid, leveraging the strengths of different modalities and reasoning paradigms.\n\nThe emphasis on trustworthiness, safety, and ethical considerations, from repairing distilled models to vulnerability-aware safety benchmarks, signals a critical shift towards building AI that is not just capable, but also dependable and aligned with human values. The challenges in multilingual performance and context management for long-horizon tasks remain significant, but active research is yielding practical solutions and deeper insights. The coming months will likely see continued innovation in agent architectures, robust evaluation methodologies, and practical efficiency gains for large-scale models."
+    },
+    "3_OpenSource_Ecosystem": {
+      "title": "Open-Source AI Developments",
+      "questions": [
+        "What significant open-source model releases, tools, or datasets launched this week?",
+        "How are open-weight models (Llama, Mistral, Qwen, Gemma) progressing vs. closed models?",
+        "Which open-source libraries, frameworks, or tools are gaining adoption?"
+      ],
+      "analysis": "Analysis unavailable, all AI providers failed. Will retry next run."
+    },
+    "4_AI_Safety_Alignment": {
+      "title": "AI Safety, Alignment & Governance",
+      "questions": [
+        "What new safety research, red-teaming results, or alignment papers were published?",
+        "How are labs and governments addressing AI risk, new policies, standards, or frameworks?",
+        "What's the latest on interpretability, RLHF improvements, and evaluation of dangerous capabilities?"
+      ],
+      "analysis": "Analysis unavailable, all AI providers failed. Will retry next run."
+    },
+    "5_Applied_AI_Healthcare": {
+      "title": "AI in Healthcare, Biology & Science",
+      "questions": [
+        "What are the most promising AI applications in drug discovery, diagnostics, or clinical trials?",
+        "Which biomedical AI papers show real clinical impact or novel biological insights?",
+        "How is AI being used in protein folding, genomics, medical imaging, or scientific simulation?"
+      ],
+      "analysis": "Analysis unavailable, all AI providers failed. Will retry next run."
+    },
+    "6_Benchmarks_Evaluation": {
+      "title": "Benchmarks, Evaluations & Datasets",
+      "questions": [
+        "What new benchmarks or evaluation frameworks were proposed this week?",
+        "How are existing leaderboards shifting, which models are climbing/falling?",
+        "What new datasets were released, and what gaps do they address?"
+      ],
+      "analysis": "Analysis unavailable, all AI providers failed. Will retry next run."
+    },
+    "7_Industry_Applications": {
+      "title": "Industry & Applied AI Trends",
+      "questions": [
+        "What AI product launches, enterprise deployments, or real-world applications made news?",
+        "How are companies integrating AI agents, copilots, or automation into workflows?",
+        "What emerging AI use cases are gaining traction beyond chatbots and code generation?"
+      ],
+      "analysis": "Analysis unavailable, all AI providers failed. Will retry next run."
+    }
+  },
+  "scrape_stats": {
+    "total_chars": 80953,
+    "source_count": 8,
+    "sources": {
+      "arXiv": {
+        "chars": 35054,
+        "status": "ok"
+      },
+      "HuggingFace Daily Papers": {
+        "chars": 20973,
+        "status": "ok"
+      },
+      "Import AI": {
+        "chars": 52,
+        "status": "thin"
+      },
+      "PubMed": {
+        "chars": 18193,
+        "status": "ok"
+      },
+      "BioRxiv": {
+        "chars": 727,
+        "status": "ok"
+      },
+      "Reddit ML": {
+        "chars": 52,
+        "status": "thin"
+      },
+      "TLDR AI": {
+        "chars": 5587,
+        "status": "ok"
+      },
+      "The Batch": {
+        "chars": 315,
+        "status": "ok"
+      }
+    }
+  }
+}
